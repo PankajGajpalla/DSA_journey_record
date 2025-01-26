@@ -1,0 +1,21 @@
+void insert_at_bottom(stack<int> &stack, int n){
+    if(stack.empty()){
+        stack.push(n);
+        return;
+    }
+    int ch = stack.top();
+    stack.pop();
+    insert_at_bottom(stack, n);
+    stack.push(ch);
+    return;
+}
+void reverseStack(stack<int> &stack) {
+    if(stack.empty()){
+        return;
+    }
+    int ch = stack.top();
+    stack.pop();
+    reverseStack(stack);
+    insert_at_bottom(stack, ch);
+    return;
+}
