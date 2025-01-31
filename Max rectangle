@@ -1,0 +1,65 @@
+class Solution {
+  private:
+    vector<int> leftmin(vector<int> mat, int col){
+        stack<int> st;
+        st.push(-1);
+        vector<int> ans(col);
+        
+        for(int i=0; i<col; i++){
+            while(st.top() != -1 && mat[st.top()]>=mat[i]){
+                st.pop();
+            }
+            ans[i] = st.top();
+            st.push(i);
+        }
+        return ans;
+    }
+    vector<int> rightmin(vector<int> mat, int col){
+        stack<int> st;
+        int n = col;
+        st.push(n);
+        vector<int> ans(col);
+        
+        for(int i=n-1; i>=0; i--){
+            while(st.top() != n && mat[st.top()]>=mat[i]){
+                st.pop();
+            }
+            ans[i] = st.top();
+            st.push(i);
+        }
+        return ans;
+    }
+    int Rectanglemaxarea(vector<int> mat, int col){
+        vector<int> left = leftmin(mat, col);
+        vector<int> right = rightmin(mat, col);
+        
+        int area = 0;
+        for(int i=0; i<col; i++){
+            int height = mat[i];
+            int breadth = right[i] - left[i] -1;
+            area = max(area, height*breadth);
+        }
+        return area;
+    }
+  public:
+    // Function to calculate the maximum area of a rectangle
+    // in the given matrix.
+    int maxArea(vector<vector<int>> &mat) {
+        if(mat.empty()) return 0;
+        int n = mat.size();
+        int m = mat[0].size();
+        int area = Rectanglemaxarea(mat[0], m);
+        
+        for(int i=1; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(mat[i][j] != 0){
+                    mat[i][j] += mat[i-1][j];    
+                }else{
+                    mat[i][j]  = 0;
+                }
+            }
+            area = max(area, Rectanglemaxarea(mat[i], m));
+        }
+        return area;
+    }
+};
