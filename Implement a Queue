@@ -1,0 +1,58 @@
+#include <bits/stdc++.h> 
+class Queue {
+        int size;
+        int *arr;
+        int funt;
+        int rear;
+public:
+    
+    Queue() {
+        size = 100001;
+        arr = new int[size];
+        funt = 0;
+        rear = 0;
+    }
+
+    /*----------------- Public Functions of Queue -----------------*/
+
+    bool isEmpty() {
+        if(funt == rear){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    void enqueue(int data) {
+        // Implement the enqueue() function
+        if(rear == size){
+            return;
+        }else{
+            arr[rear] = data;
+            rear++;
+        }
+    }
+
+    int dequeue() {
+        if(funt == rear){
+            return -1;
+        }else{
+            int d = arr[funt];
+            arr[funt] = -1;
+            funt++;
+            if(funt == rear){
+                funt = 0;
+                rear = 0;
+            }
+            return d;
+        }
+    }
+
+    int front() {
+        if(funt == rear){
+            return -1;
+        }else{
+            return arr[funt];
+        }
+    }
+};
