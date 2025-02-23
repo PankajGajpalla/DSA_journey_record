@@ -1,0 +1,36 @@
+class Solution {
+  public:
+    void mapping(map<int, int>& m, vector<int> &inorder, int n){
+        for(int i=0; i<n; i++){
+            m[inorder[i]] = i;
+        }
+    }
+    
+    
+    Node* solve(vector<int> &inorder, vector<int> &postorder, int n, int &index, int in_start, int in_end, map<int, int> &m){
+        if(index<0 || in_start> in_end){
+            return NULL;
+        }
+        
+        int element = postorder[index--];
+        Node* root = new Node(element);
+        int position = m[element];
+        
+        root->right = solve(inorder, postorder, n, index, position+1, in_end, m);
+        root->left = solve(inorder, postorder, n, index, in_start, position-1, m);
+        // root->right = solve(inorder, postorder, n, index, position+1, in_end, m);
+        
+        return root;
+        
+    }
+    
+    Node* buildTree(vector<int> inorder, vector<int> postorder) {
+        int n = inorder.size();
+        
+        map<int, int> m;
+        mapping(m, inorder, n);
+        int index = n-1;
+        Node* ans =solve(inorder, postorder, n, index, 0, n-1, m);
+        return ans;
+    }
+};
