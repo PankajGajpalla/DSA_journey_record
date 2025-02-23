@@ -1,0 +1,72 @@
+class Solution {
+  public:
+    Node* parenting(Node* root, int target, map<Node*, Node*> &NodeToParrent){
+        Node* t = NULL;
+        queue<Node*> q;
+        q.push(root);
+        NodeToParrent[root] = NULL;
+        
+        while(!q.empty()){
+            Node* temp = q.front();
+            q.pop();
+            if(temp->data == target){
+                t = temp;
+            }
+            
+            if(temp->left){
+                NodeToParrent[temp->left] = temp;
+                q.push(temp->left);
+            }
+            if(temp->right){
+                NodeToParrent[temp->right] = temp;
+                q.push(temp->right);
+            }
+        }
+        return t;
+    }
+    
+    int burn(Node* root, map<Node*, Node*> &NodeToParrent){
+        map<Node*, bool> visited;
+        queue<Node*> q;
+        q.push(root);
+        visited[root] = true;
+        
+        int ans = 0;
+        
+        while(!q.empty()){
+            int size = q.size();
+            bool flag = 0;
+            
+            for(int i=0; i<size; i++){
+                Node* front = q.front();
+                q.pop();
+                
+                if(front->left && !visited[front->left]){
+                    q.push(front->left);
+                    visited[front->left] = true;
+                    flag = 1;
+                }
+                if(front->right && !visited[front->right]){
+                    q.push(front->right);
+                    visited[front->right] = true;
+                    flag = 1;
+                }
+                if(NodeToParrent[front] && !visited[NodeToParrent[front]]){
+                    q.push(NodeToParrent[front]);
+                    visited[NodeToParrent[front]] = true;
+                    flag = 1;
+                }
+            }
+            if(flag == 1){
+                ans +=1;
+            }
+        }
+        return ans;
+    }
+    int minTime(Node* root, int target) {
+        map<Node*, Node*> NodeToParrent;
+        Node* tgt = parenting(root, target, NodeToParrent);
+        int ans = burn(tgt, NodeToParrent);
+        return ans;
+    }
+};
