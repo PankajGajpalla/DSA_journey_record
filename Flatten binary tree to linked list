@@ -1,0 +1,22 @@
+class Solution
+{
+    public:
+    void flatten(Node *root)
+    {
+        Node* curr = root;
+        while(curr != NULL){
+            if(curr->left){
+                Node* trav = curr->left;
+                while(trav->right){
+                    trav = trav->right;
+                }
+                trav->right = curr->right;
+                curr->right = curr->left;
+                curr->left = NULL;
+                curr = curr->right;
+            }else{
+                curr = curr->right;
+            }
+        }
+    }
+};
