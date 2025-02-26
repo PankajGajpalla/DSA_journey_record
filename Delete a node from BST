@@ -1,0 +1,55 @@
+class Solution {
+  public:
+    // Function to delete a node from BST.
+    Node* mininode(Node* root){
+        if(root->left == NULL) return root;
+        root = mininode(root->left);
+        return root;
+    }
+    Node* maxinode(Node* root){
+        if(root->right == NULL) return root;
+        root = maxinode(root->right);
+        return root;
+    }
+    Node *deleteNode(Node *root, int X) {
+        if(root == NULL) return NULL;
+        
+        if(root->data == X){
+            //nochild
+            if(root->left == NULL && root->right == NULL){
+                delete root;
+                return NULL;
+            }
+            //1child
+            
+            //left-child
+            if(root->left != NULL && root->right == NULL){
+                Node* temp = root->left;
+                delete root;
+                return temp;
+            }
+            //right-child
+            if(root->left == NULL && root->right != NULL){
+                Node* temp = root->right;
+                delete root;
+                return temp;
+            }
+            
+            //2child
+            if(root->left != NULL && root->right != NULL){
+                int cng = maxinode(root->left)->data;
+                root->data = cng;
+                root->left = deleteNode(root->left, cng);
+                return root;
+                
+            }
+        }
+        if(X<root->data){
+            root->left = deleteNode(root->left, X);
+            return root;
+        }else{
+            root->right = deleteNode(root->right, X);
+            return root;
+        }
+    }
+};
