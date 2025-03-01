@@ -1,0 +1,35 @@
+pair<int, int> predecessorSuccessor(TreeNode *root, int key)
+{
+    TreeNode* temp = root;
+    int p = -1;
+    int s = -1;
+
+    while(temp != NULL && temp->data != key){
+        if(temp->data > key){
+            s = temp->data;
+            temp= temp->left;
+        }
+        else{
+            p = temp->data;
+            temp= temp->right;
+        }
+    }
+    if(temp == NULL) return {p, s};
+
+    TreeNode* leftNode = temp->left;
+    while(leftNode != NULL){ //left tree ke sabse right me jo hai 
+        p = leftNode->data;
+        leftNode = leftNode->right;
+    }
+
+    TreeNode* rightNode = temp->right;
+    while(rightNode != NULL){ //right tree ke sabse left me jo hai 
+        s = rightNode->data;
+        rightNode = rightNode->left;
+    }
+    // inorder traversal print kar ke dekh its like .....lefttree_ka__lastrigth, Node, righttree_ka_last left,..
+
+
+    // pair<int, int> ans = make_pair(p,s);
+    return {p, s};
+}
