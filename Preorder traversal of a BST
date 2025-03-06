@@ -1,0 +1,15 @@
+BinaryTreeNode<int>* solve(vector<int>&preorder, int mini, int maxi, int &i){
+    if(i >= preorder.size()) return NULL;
+    
+    if((preorder[i] <mini) || (preorder[i]>maxi)) return NULL;
+
+    BinaryTreeNode<int>* newnode = new BinaryTreeNode<int>(preorder[i++]);
+    newnode->left = solve(preorder, mini, newnode->data, i);
+    newnode->right = solve(preorder, newnode->data, maxi, i);
+    return newnode;
+}
+BinaryTreeNode<int>* preorderToBST(vector<int> &preorder) {
+    int i = 0;
+    return solve(preorder, INT_MIN, INT_MAX, i);
+
+}
