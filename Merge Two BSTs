@@ -1,0 +1,55 @@
+void inorder(TreeNode* root, vector<int>& v){
+    if(root == NULL) return;
+
+    inorder(root->left, v);
+    v.push_back(root->data);
+    inorder(root->right, v);
+}
+
+vector<int> inorderMerge(vector<int> &r1, vector<int> &r2){
+    vector<int> merged;
+    int i=0;
+    int j=0;
+    while((i<r1.size()) && (j<r2.size())){
+        if(r1[i]<r2[j]){
+            merged.push_back(r1[i++]);
+        }else{
+            merged.push_back(r2[j++]);
+        }
+    }
+
+    while(i<r1.size()){
+        merged.push_back(r1[i++]);
+    }
+    while(j<r2.size()){
+        merged.push_back(r2[j++]);
+    }
+
+    return merged;
+}
+
+// vector<int> mergedToBst(int s, int e, vector<int>&merged){
+//     if(s>e) return NULL;
+
+//     int mid = (s+e)/2;
+
+
+    
+
+
+// }
+vector<int> mergeBST(TreeNode *root1, TreeNode *root2)
+{
+    vector<int> r1;
+    inorder(root1, r1);
+    vector<int> r2;
+    inorder(root2, r2);
+
+    vector<int> merged = inorderMerge(r1, r2);
+
+    int s = 0;
+    int e = r1.size() + r2.size() -1;
+    return merged;
+    
+
+}
