@@ -1,0 +1,44 @@
+#include <bits/stdc++.h> 
+/*************************************************************
+    
+    Following is the Binary Tree node structure:
+
+	class BinaryTreeNode {
+		
+	public :
+		int data;
+		BinaryTreeNode* left;
+		BinaryTreeNode* right;
+
+		BinaryTreeNode(int data) {
+		this -> left = NULL;
+		this -> right = NULL;
+		this -> data = data;
+		}
+	};
+
+*************************************************************/
+void inorder(BinaryTreeNode* root, vector<int> &arr){
+	if(root==NULL) return;
+
+	inorder(root->left, arr );
+	arr.push_back(root->data);
+	inorder(root->right, arr);
+}
+
+void preorderfill(BinaryTreeNode* root, vector<int> &arr, int &index){
+	if(root == NULL) return;
+
+	root->data = arr[index++];
+	preorderfill(root->left, arr, index);
+	preorderfill(root->right, arr, index);
+}
+BinaryTreeNode* convertBST(BinaryTreeNode* root)
+{
+	// Write your code here.
+	vector<int> arr;
+	inorder(root, arr);
+	int index = 0;
+	preorderfill(root, arr, index);
+	return root;
+}
