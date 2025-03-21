@@ -1,0 +1,26 @@
+class Solution{
+  public:
+    void inorder(Node* root, vector<int> &arr){
+        if(root == NULL) return;
+        
+        inorder(root->left, arr);
+        arr.push_back(root->data);
+        inorder(root->right, arr);
+    }
+    
+    //we are not converting to postorder we are just putting the inorder value into yhe tree in a postordertraverasl manner dont get confuse refer gfg notes
+    void postorder(Node* root, vector<int>&arr, int &i){
+        if(root==NULL)return;
+        
+        postorder(root->left, arr, i);
+        postorder(root->right, arr, i);
+        root->data = arr[i++];
+    }
+    void convertToMaxHeapUtil(Node* root)
+    {
+        vector<int> arr;
+        inorder(root, arr);
+        int index = 0;
+        postorder(root, arr, index);
+    }    
+};
