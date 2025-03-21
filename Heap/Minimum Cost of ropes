@@ -1,0 +1,25 @@
+class Solution {
+  public:
+    // Function to return the minimum cost of connecting the ropes.
+    int minCost(vector<int>& arr) {
+        priority_queue<int, vector<int>, greater<int>> pq;
+        for(int i=0; i<arr.size(); i++){
+            pq.push(arr[i]);
+        }
+        // if(pq.size() == 1) return pq.top(); for singlel input we need to return 0
+        int ans = 0;
+        while(pq.size() >1){
+            int sum = pq.top();
+            pq.pop();
+            sum+=pq.top();
+            pq.pop();
+            pq.push(sum);
+            ans +=sum;
+        }
+        // if(pq.size() == 1){
+        //     ans+=pq.top();
+        //     pq.pop();
+        // }
+        return ans;
+    }
+};
