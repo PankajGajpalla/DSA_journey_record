@@ -1,0 +1,17 @@
+int maximumFrequency(vector<int> &arr, int n)
+{
+    unordered_map<int, int> m;
+    int maxi = INT_MIN;
+
+    for(int i=0; i<arr.size(); i++){
+        m[arr[i]]++;
+        maxi = max(maxi, m[arr[i]]);
+    }
+
+    for(int i=0; i<n; i++){
+        if(maxi == m[arr[i]]){
+            return arr[i];
+        }
+    }
+    
+}
