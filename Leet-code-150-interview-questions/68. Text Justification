@@ -1,0 +1,99 @@
+eji hai logical and some conditions try to create with single space by yourself and then slowly try to make it more like that and eventually ull understand y we need a vector string and the last condition and all that ...
+
+image.png
+
+Code
+class Solution {
+public:
+    vector<string> fullJustify(vector<string>& words, int maxWidth) {
+        vector<string> ans;
+        vector<string> line;
+        int linelength = 0;
+
+        for(int i=0; i<words.size(); i++){
+            if(linelength + words[i].size() + line.size() > maxWidth){
+                int totalSpace = maxWidth - linelength;
+                int gap = line.size()-1;
+                string str;
+
+                if(gap == 0){
+                    str = line[0] + string(totalSpace, ' ');
+                }else{
+                    int evenSpace = totalSpace/gap;
+                    int extraSpace = totalSpace%gap;
+
+                    for(int j=0; j<line.size(); j++){
+                        str += line[j];
+                        if(j<gap){
+                            str += string(evenSpace + (j<extraSpace? 1:0), ' ');
+                        }
+                    }
+                }
+                ans.push_back(str);
+                line.clear();
+                linelength = 0;
+            }
+
+            line.push_back(words[i]);
+            linelength += words[i].size();
+        }
+
+        string lastStr;
+        
+        for(int i=0; i<line.size(); i++){
+            lastStr += line[i] + string( i<line.size()-1? 1:0, ' '); 
+        }
+        int totalSpace = maxWidth - lastStr.size();
+        lastStr += string(totalSpace, ' ');
+        
+        ans.push_back(lastStr);
+        return ans;
+    }
+};
+
+// i tried
+// class Solution {
+// public:
+//     vector<string> fullJustify(vector<string>& words, int maxWidth) {
+        
+//         vector<string> ans;
+//         vector<string> s;
+//         int word_length = 1;
+//         int sp_counter = 1;
+//         string st;
+//         for(int i=0; i<words.size(); i++){
+//             if((word_length + words[i].length()) < maxWidth){
+//                 s.push_back(words[i]);
+//                 word_length +=words[i].length();
+//             }else{
+//                 st = "";
+//                 int space_needed = 0;
+//                 if(s.size()!=1){
+//                     space_needed = (maxWidth-word_length + sp_counter)/(s.size()-1);    
+//                 }
+//                 string spaces = "";
+//                 for(int j=0; j<space_needed; j++){
+//                     spaces+=" ";
+//                 }
+//                 for(int j = 0; j<s.size()-1; j++){
+//                     st+=s[j] + spaces;
+//                 } 
+//                 st += s[s.size()-1];
+//                 ans.push_back(st);
+//                 s.clear();
+//                 s.push_back(words[i]);
+//                 word_length = words[i].length();
+//                 sp_counter = 0;
+//             }
+//         }
+//         st = "";
+//         for(int i=0; i<s.size(); i++){
+//             st += s[i] + " ";
+//         }
+//         // for( int i=0; i<(maxWidth-st.length()); ++i){
+//         //     st+=" ";
+//         // }
+//         ans.push_back(st);
+//         return ans;
+//     }
+// };
