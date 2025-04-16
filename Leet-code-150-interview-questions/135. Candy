@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int candy(vector<int>& ratings) {
+        int n = ratings.size();
+
+        int candy = n, i=1;
+        while(i<n){
+            if(ratings[i]==ratings[i-1]){
+                i++;
+                continue;
+            }
+
+            int peak = 0;
+            while(ratings[i] >ratings[i-1]){
+                peak++;
+                candy += peak;
+                i++;
+                if(i==n) return candy;
+            }
+
+            int valley = 0;
+            while(i<n && ratings[i]<ratings[i-1]){
+                valley++;
+                candy += valley;
+                i++;
+            }
+
+            candy -= min(peak, valley);
+        }
+        return candy;
+    }
+};
+
+// lets see if we have 4 5 6 5 4 3 2 1 so in this case we are adding candy from peak side as well as valley side so we will subtract minimum of valley and peak so that we can add the maximum of the both only once jase ek side se 3 or dusre se 5 to apane 3+5 kar ke bad me 3 hata denge :)))) 
