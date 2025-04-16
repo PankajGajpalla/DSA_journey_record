@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int s = 0; 
+        int e = height.size()-1;
+
+        int max_vol = 0;
+        
+        while(s<e){
+            max_vol = max(max_vol, (e-s)*min(height[s], height[e]));
+
+            if(height[s]<height[e]){
+                s++;
+            }else{
+                e--;
+            }
+        }
+        
+
+        return max_vol;
+    }
+};11. Container With Most Water
