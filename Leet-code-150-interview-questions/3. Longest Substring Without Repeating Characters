@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        if(s.length() == 1) return 1;
+        int slength = 0;
+        int left = 0;
+        unordered_map<char, int> mp;
+
+        for(int right =0; right<s.length(); right++){
+            char c = s[right];
+            
+            if(mp.find(c) != mp.end() && mp[c]>=left ){ // if found and also  its inside the window we are talking about 
+                left = mp[c] + 1;   //shifting the left to the next of the last appeared index :) 
+            }
+
+            slength = max(slength, right-left +1); //calculating the length 
+            mp[c] = right; // storing the index and if already have then updating it with new index
+        }
+
+        return slength;
+    }
+};
