@@ -1,0 +1,333 @@
+🚩 Problem:
+Given a 2D matrix, return all elements in spiral order.
+
+✅ Code Overview:
+cpp
+Copy
+Edit
+vector<int> spiralOrder(vector<vector<int>>& matrix)
+This function takes a 2D vector as input and returns a 1D vector of elements in spiral traversal order.
+
+🧠 Initial Setup:
+cpp
+Copy
+Edit
+int rows = matrix.size();
+int cols = matrix[0].size();
+rows and cols store the dimensions of the matrix.
+
+cpp
+Copy
+Edit
+int x = 0;
+int y = 0;
+(x, y) is the current position in the matrix.
+
+We start from the top-left corner (0, 0).
+
+cpp
+Copy
+Edit
+int dx = 1;
+int dy = 0;
+(dx, dy) is the direction vector.
+
+Initially, (1, 0) means we're moving right (incrementing x).
+
+cpp
+Copy
+Edit
+vector<int> res;
+This will store the final spiral order traversal.
+
+🔁 Main Loop:
+cpp
+Copy
+Edit
+for (int i = 0; i < rows * cols; i++) {
+We will loop exactly rows * cols times because we want to visit every element in the matrix once.
+
+✅ Step-by-step inside the loop:
+1. Add current cell to result
+cpp
+Copy
+Edit
+res.push_back(matrix[y][x]);
+Add the current element to the result.
+
+2. Mark current cell as visited
+cpp
+Copy
+Edit
+matrix[y][x] = -101;
+Mark the cell as visited using a sentinel value.
+(-101 is safe because the constraints say elements are in range [-100, 100]).
+
+3. Check next direction
+cpp
+Copy
+Edit
+if (!(0 <= x + dx && x + dx < cols && 0 <= y + dy && y + dy < rows) || matrix[y+dy][x+dx] == -101) {
+We check two things:
+
+Is the next position (x + dx, y + dy) within the matrix boundaries?
+
+Has it already been visited (i.e., is it -101)?
+
+➡️ If either is false, then we rotate the direction clockwise.
+
+4. Rotate direction
+cpp
+Copy
+Edit
+int temp = dx;
+dx = -dy;
+dy = temp;
+This is the trick to rotate the direction clockwise:
+
+Right (dx=1, dy=0) → Down (0, 1)
+
+Down (0,1) → Left (-1,0)
+
+Left → Up
+
+Up → Right again
+
+5. Move to next position
+cpp
+Copy
+Edit
+x += dx;
+y += dy;
+💡 How direction changes work:
+
+Current	New Direction
+Right (1, 0) → Down (0, 1)	
+Down (0, 1) → Left (-1, 0)	
+Left (-1, 0) → Up (0, -1)	
+Up (0, -1) → Right (1, 0)	
+🔚 Return result:
+cpp
+Copy
+Edit
+return res;
+Returns the spiral ordered vector.
+
+📌 Example Walkthrough:
+Input:
+
+cpp
+Copy
+Edit
+matrix = {
+  {1, 2, 3},
+  {4, 5, 6},
+  {7, 8, 9}
+}
+Order of access:
+
+Copy
+Edit
+→ 1  2  3
+↓        6
+←     5
+↑  7  8
+→ 4
+Output:
+
+csharp
+Copy
+Edit
+[1,2,3,6,9,8,7,4,5]
+Let me know if you want a dry run with a specific matrix, or want this logic converted to Python or explained visually!
+
+
+
+
+
+
+
+You said:
+explain with an example step by step
+
+
+ChatGPT said:
+Alright Luffy! Let’s go step-by-step with an actual example and walk through each iteration of the loop with positions, direction, and result building.
+
+🧪 Example Matrix:
+cpp
+Copy
+Edit
+matrix = {
+  {1,  2,  3},
+  {4,  5,  6},
+  {7,  8,  9}
+};
+This is a 3x3 matrix. Our goal is to return elements in spiral order:
+
+Expected Output:
+
+csharp
+Copy
+Edit
+[1, 2, 3, 6, 9, 8, 7, 4, 5]
+🧮 Initialization:
+rows = 3, cols = 3
+
+x = 0, y = 0 → start at top-left
+
+dx = 1, dy = 0 → direction: right
+
+res = [] → result vector
+
+🔁 Loop Iterations (rows * cols = 9 total):
+Let’s go step-by-step through each of the 9 iterations:
+
+✅ Iteration 1:
+x=0, y=0 → matrix[0][0] = 1
+
+res = [1]
+
+Mark: matrix[0][0] = -101
+
+Next position: x+dx=1, y+dy=0 → OK
+
+Move: x=1
+
+✅ Iteration 2:
+x=1, y=0 → matrix[0][1] = 2
+
+res = [1, 2]
+
+Mark: matrix[0][1] = -101
+
+Next: x+1=2, y=0 → OK
+
+Move: x=2
+
+✅ Iteration 3:
+x=2, y=0 → matrix[0][2] = 3
+
+res = [1, 2, 3]
+
+Mark: matrix[0][2] = -101
+
+Next: x+1=3, y=0 → ❌ Out of bounds
+
+Rotate direction: dx=0, dy=1 → now going down
+
+Move: y=1
+
+✅ Iteration 4:
+x=2, y=1 → matrix[1][2] = 6
+
+res = [1, 2, 3, 6]
+
+Mark: matrix[1][2] = -101
+
+Next: x=2, y+1=2 → OK
+
+Move: y=2
+
+✅ Iteration 5:
+x=2, y=2 → matrix[2][2] = 9
+
+res = [1, 2, 3, 6, 9]
+
+Mark: matrix[2][2] = -101
+
+Next: y+1=3 → ❌ Out of bounds
+
+Rotate: dx=-1, dy=0 → now going left
+
+Move: x=1
+
+✅ Iteration 6:
+x=1, y=2 → matrix[2][1] = 8
+
+res = [1, 2, 3, 6, 9, 8]
+
+Mark: matrix[2][1] = -101
+
+Next: x-1=0 → OK
+
+Move: x=0
+
+✅ Iteration 7:
+x=0, y=2 → matrix[2][0] = 7
+
+res = [1, 2, 3, 6, 9, 8, 7]
+
+Mark: matrix[2][0] = -101
+
+Next: x-1=-1 → ❌ Out of bounds
+
+Rotate: dx=0, dy=-1 → now going up
+
+Move: y=1
+
+✅ Iteration 8:
+x=0, y=1 → matrix[1][0] = 4
+
+res = [1, 2, 3, 6, 9, 8, 7, 4]
+
+Mark: matrix[1][0] = -101
+
+Next: y-1=0, x=0 → already visited -101
+
+Rotate: dx=1, dy=0 → now going right
+
+Move: x=1
+
+✅ Iteration 9:
+x=1, y=1 → matrix[1][1] = 5
+
+res = [1, 2, 3, 6, 9, 8, 7, 4, 5]
+
+Mark: matrix[1][1] = -101
+
+Done! (9 elements visited)
+
+🧾 Final Output:
+cpp
+Copy
+Edit
+[1, 2, 3, 6, 9, 8, 7, 4, 5]
+Perfect spiral order!
+
+
+# Code
+```cpp []
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        int row = matrix.size();
+        int col = matrix[0].size();
+
+        //this represents the index 
+        int x = 0; //changes column dont get confused
+        int y = 0; //changes row dont get confused
+        //this helps to change the direction and also to iterate by incrementing or decrementing the above index value;
+        int dx = 1;
+        int dy = 0;
+
+        vector<int> v;
+        for(int i=0; i<row*col; i++){
+            v.push_back(matrix[y][x]);
+            matrix[y][x] = -101; // marking the matrix with -101
+            if( !(0<=x+dx && x+dx<col && 0<=y+dy && y+dy<row) || matrix[y+dy][x+dx] == -101){
+                //this means the matrix is already visited  so we need to change the direction 
+                int temp = dx;
+                dx = -dy;  //basically swaping the value of x and y but in x multiply it with -1
+                dy = temp;
+            }          
+
+            x += dx;
+            y += dy;
+        }
+
+        return v; //read the solution pasted for step by setp execution:)
+
+    }
+};
+```
