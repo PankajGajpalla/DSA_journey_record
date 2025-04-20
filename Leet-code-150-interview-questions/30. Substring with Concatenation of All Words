@@ -1,0 +1,42 @@
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        unordered_map<string, int> mpp; //creating a map to store the number of word in words
+        vector<int> result; //to reutnr the final answer
+
+        for(auto st: words) mpp[st]++;  // storing the count
+
+        int length = words[0].size();  //length of a single word in words
+
+        for(int offset = 0; offset <length; offset++){ // every time we loop the whole string s but each time we start with 0th index, 1st index...till length of a word in words 
+            unordered_map<string, int> seen; //each iteration we create a count for the sub string we found in s
+            int size = 0; // stores the number of word in seen
+
+            for(int i=offset; i+length <= s.size(); i+=length){ //starting from the particular offset means skiped word and from their continueing to create length size word till s.size()
+                string sub = s.substr(i, length);// creating a sub string of  length size
+
+                auto itr = mpp.find(sub); //checking if the that sub is present in our map 
+                if(itr == mpp.end()){ // if not present then clear seen and size back to 0 and skip that word and continue from the next set of word
+                    seen.clear();
+                    size = 0;
+                    continue;
+                }
+
+                ++seen[sub]; //if it is one of the word in words then add it in seen and increase the size that is the numebr of substring in seen
+                ++size;
+                while(seen[sub]>(itr->second)){   //after all the above is done now we need to check weather any sub is repeated more then required amuount to check that we did (no. of time it is presetn in seen is it greter then the requier presnt in map) if thats true then we do the loop until its removed
+                    string first = s.substr((i-(size-1)*length), length); //we continue to remove the first letters from where we started adding to seen to do that we subtract the (no. of substring in seen that is size * length) to the current i where we are. and get that substing
+
+                    --seen[first]; // after that we remove it from seen 1 time or till the condition is satisfied 
+                    --size; //and also decrese the size
+                }
+
+                if(size == words.size()){ //finally after all the filltering is done we now know that we have a concatenated string using the word in words and if it also satisfied the size to the number of wrod in words then that means we have it we have the concatenated string 
+                    result.push_back(i - (size-1)*length); // so now we push that index by doing like before (from the current position i we subtract (size-1)*length and get the positoin of the starting of the concateded string) and push it
+                }
+            }
+        }   
+
+        return result; //  :)
+    }
+};
