@@ -1,0 +1,45 @@
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        if(s.length()< t.length()) return "";
+
+        unordered_map<char, int> charCount;
+        for(auto c: t) charCount[c]++;
+
+        int remainingLength = t.length();
+        int windowSize[2] = {0, INT_MAX};
+        int start_index = 0;
+
+        for(int endIndex = 0; endIndex<s.length(); endIndex++){
+            char ch = s[endIndex];
+            if(charCount.find(ch) != charCount.end() && charCount[ch] >0){
+                remainingLength--;
+            }
+            charCount[ch]--;//?
+            
+
+            if(remainingLength == 0){
+                while(true){
+                    char startChar = s[start_index];
+                    if(charCount.find(startChar) != charCount.end() && charCount[startChar] == 0){
+                        break;
+                    }
+                    charCount[startChar]++; //?
+                    start_index++;
+                }
+
+                if(endIndex-start_index < windowSize[1]-windowSize[0] ){
+                    windowSize[0] = start_index;
+                    windowSize[1] = endIndex;
+                }
+                charCount[s[start_index]]++;
+                remainingLength++;
+                start_index++;
+            }
+            
+        }
+
+        return (windowSize[1]>s.length())? "": s.substr(windowSize[0], windowSize[1]-windowSize[0] +1 );
+
+    }
+};
