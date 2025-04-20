@@ -1,0 +1,81 @@
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n = nums.size();
+        int sum = 0, s = 0, minLen = INT_MAX;
+
+        for (int e = 0; e < n; ++e) {
+            sum += nums[e];
+
+            while (sum >= target) {
+                minLen = min(minLen, e - s + 1);
+                sum -= nums[s++];
+            }
+        }
+
+        return (minLen == INT_MAX) ? 0 : minLen;
+    }
+};
+
+
+read the question properly it says target 
+// class Solution {
+// public:
+//     int minSubArrayLen(int target, vector<int>& nums) {
+//         int n = nums.size(); 
+//         if(nums.size() ==1 && nums[0] != target) return 0;
+
+//         int sum = 0;
+//         int s =0;
+//         int e = 0;
+//         int cnt = INT_MAX;
+
+//         while(e<n){
+//             sum += nums[e];
+            
+//             while(sum>target && s<=e){
+//                 sum -= nums[s];
+//                 s++;
+//                 if(sum == target){
+//                     cnt = min(cnt, e-s+1);
+//                 }
+                
+//             } 
+//             e++;
+
+//         }
+//         return (cnt==INT_MAX)?  0: cnt;
+//     }
+// };
+
+
+
+
+
+
+
+
+
+
+// // class Solution {
+// // public:
+// //     int minSubArrayLen(int target, vector<int>& nums) {
+// //         int sum =0;
+// //         int s = 0; 
+// //         int e =0;
+// //         int length = INT_MAX;
+// //         for(int i=0; i<nums.size(); i++){
+// //             sum += nums[i];
+// //             e++;
+// //             if(sum>target){
+// //                 sum -= nums[s];
+// //                 s++;
+// //             }else if(sum == target){
+// //                 length = min(length, e-s+1);
+// //             }
+// //         }
+// //         if(length == INT_MAX) return 0;
+
+// //         return length;
+// //     }
+// // };
