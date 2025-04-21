@@ -1,0 +1,25 @@
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        int n = matrix.size(); // taking the no.of rows 
+
+        //doing transpose of the matrix
+        for(int i=0; i<n; i++){ // we are iterating over the columns
+            for(int j=i+1; j<n; j++){ // very smartly we are doing i+1 which also help us to skip the diagnal u see like i=0 then j=1, i=1 then j=2, i=2then j=3 very smartly we are skiping the diagnols as the diagnols are 0,1,2 respectively
+            swap(matrix[i][j], matrix[j][i]);
+            }
+        }
+
+        // simply after doing that  we get 
+        // [
+        //     [1, 4, 7]
+        //     [2, 5, 8]
+        //     [3, 6, 9]
+        // ]
+
+        // as you can see we just need to reverse it and we are all set:)
+        for(int i=0; i<n; i++){
+            reverse(matrix[i].begin(), matrix[i].end());
+        }
+    }
+};
