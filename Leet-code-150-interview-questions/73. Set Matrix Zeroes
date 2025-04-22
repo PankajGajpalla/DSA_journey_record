@@ -1,0 +1,326 @@
+
+
+# Code
+```cpp []
+void setZeroes(vector<vector<int>>& matrix) {
+    int n = matrix.size();
+    int m = matrix[0].size();
+    int col0 = 1;
+
+    // Step 1: Mark rows and columns
+    for(int i=0; i<n; i++){
+        for(int j=0; j<m; j++){
+            if(matrix[i][j] == 0){
+                matrix[i][0] = 0;  // mark the row
+                if(j !=0){
+                    matrix[0][j] = 0;  // mark the column
+                } else {
+                    col0 = 0;  // remember that the first column needs to be zeroed
+                }
+            }
+        }
+    }
+
+    // Step 2: Set matrix[i][j] = 0 if either its row or column is marked
+    for(int i=1; i<n; i++){
+        for(int j=1; j<m; j++){
+            if(matrix[0][j] == 0 || matrix[i][0] == 0){
+                matrix[i][j] = 0;
+            }
+        }
+    }
+
+    // Step 3: Handle the first row separately
+    if(matrix[0][0] == 0){
+        for(int i=1; i<m; i++){
+            matrix[0][i] = 0;
+        }
+    }
+
+    // Step 4: Handle the first column separately
+    if(col0 == 0){
+        for(int i=0; i<n; i++){
+            matrix[i][0] = 0;
+        }
+    }
+}
+
+```
+
+🧩 Sample Input:
+cpp
+Copy
+Edit
+matrix = {
+    {1, 1, 1},
+    {1, 0, 1},
+    {1, 1, 1}
+};
+📌 Goal:
+Set the entire row and column to 0 wherever a 0 is found.
+Final output should be:
+
+cpp
+Copy
+Edit
+{
+    {1, 0, 1},
+    {0, 0, 0},
+    {1, 0, 1}
+}
+✅ Step-by-Step Execution:
+Step 0: Initial Matrix
+Copy
+Edit
+1 1 1
+1 0 1
+1 1 1
+Step 1: First pass — marking rows and columns
+We’ll use:
+
+matrix[0][j] to mark columns to zero
+
+matrix[i][0] to mark rows to zero
+
+col0 for first column tracking
+
+Loop through matrix:
+
+matrix[1][1] == 0, so:
+
+matrix[1][0] = 0 (mark row 1)
+
+matrix[0][1] = 0 (mark column 1)
+
+State after marking:
+
+Copy
+Edit
+1 0 1
+0 0 1
+1 1 1
+(col0 remains 1 since j != 0)
+
+Step 2: Update inner matrix (excluding first row/col)
+We skip i=0 and j=0, and check the markers:
+
+matrix[1][1] = 0 → already 0
+
+matrix[1][2], matrix[2][1] → their row or column is marked → set to 0
+
+Updated matrix:
+
+Copy
+Edit
+1 0 1
+0 0 0
+1 0 1
+Step 3: Handle first row
+Since matrix[0][0] != 0, we don’t zero the whole row.
+
+Just check:
+
+matrix[0][1] == 0 → so matrix[0][1] stays 0
+
+nothing else to do here
+
+Step 4: Handle first column
+col0 == 1, so no change to first column.
+
+✅ Final Matrix:
+Copy
+Edit
+1 0 1
+0 0 0
+1 0 1
+Would you like to try this with a bigger example or one that zeros out the first row/column too?
+
+
+
+
+
+
+
+You said:
+matrix = {
+    {1, 0, 1}, 
+    {1, 1, 1}, 
+    {1, 1, 1}
+};
+
+
+ChatGPT said:
+Perfect! Let's walk through the optimal approach step by step using this new matrix:
+
+🧩 Input Matrix:
+cpp
+Copy
+Edit
+matrix = {
+    {1, 0, 1},
+    {1, 1, 1},
+    {1, 1, 1}
+};
+✅ Step 0: Initial Setup
+n = 3, m = 3
+
+col0 = 1 (means we haven't seen any 0 in column 0 yet)
+
+🔁 Step 1: Mark rows and columns
+We iterate through every element and mark rows and columns using the first row and column:
+
+Iteration 1: i = 0
+j = 0: matrix[0][0] = 1 → no action
+
+j = 1: matrix[0][1] = 0 → we mark:
+
+matrix[0][0] = 0 (mark row 0)
+
+matrix[0][1] = 0 (mark col 1)
+
+j = 2: matrix[0][2] = 1 → no action
+
+Iteration 2: i = 1
+j = 0 to 2: all are 1 → no action
+
+Iteration 3: i = 2
+j = 0 to 2: all are 1 → no action
+
+🔖 Matrix after marking:
+Copy
+Edit
+0 0 1
+1 1 1
+1 1 1
+(col0 = 1, because no 0 was in column 0)
+
+🔁 Step 2: Zero cells based on markers (excluding row 0 and column 0)
+We go from i = 1 to 2 and j = 1 to 2:
+
+i = 1:
+j = 1 → check matrix[0][1] == 0 || matrix[1][0] == 1 → TRUE → set to 0
+
+j = 2 → check matrix[0][2] == 1 && matrix[1][0] == 1 → FALSE → keep as is
+
+i = 2:
+j = 1 → matrix[0][1] == 0 → TRUE → set to 0
+
+j = 2 → matrix[0][2] == 1 && matrix[2][0] == 1 → FALSE → keep
+
+🔖 Matrix now:
+Copy
+Edit
+0 0 1
+1 0 1
+1 0 1
+🔁 Step 3: Handle first row
+Check matrix[0][0] == 0 → TRUE, so we zero the rest of row 0 starting from j = 1
+
+Result:
+Copy
+Edit
+0 0 0
+1 0 1
+1 0 1
+🔁 Step 4: Handle first column
+col0 == 1 → nothing to do
+
+✅ Final Matrix:
+Copy
+Edit
+0 0 0
+1 0 1
+1 0 1
+Let me know if you'd like to visualize it as a table, or try another test case!
+
+
+
+
+
+
+
+You said:
+matrix = {
+    {0, 1, 1}, 
+    {1, 1, 1}, 
+    {1, 1, 1}
+};
+
+
+ChatGPT said:
+Nice pick! Let's go step by step using the optimal solution on this input:
+
+🧩 Input Matrix:
+cpp
+Copy
+Edit
+matrix = {
+    {0, 1, 1},
+    {1, 1, 1},
+    {1, 1, 1}
+};
+✅ Step 0: Initial Setup
+n = 3, m = 3
+
+col0 = 1
+
+🔁 Step 1: Mark rows and columns
+i = 0
+j = 0 → matrix[0][0] == 0
+
+➤ matrix[0][0] = 0 (already is)
+
+➤ Since j == 0 → col0 = 0
+
+j = 1, 2 → no action (values are 1)
+
+i = 1
+All elements are 1 → no marking
+
+i = 2
+All elements are 1 → no marking
+
+🔖 After marking:
+Copy
+Edit
+0 1 1
+1 1 1
+1 1 1
+col0 = 0 (important for the end!)
+
+🔁 Step 2: Apply markers (skip first row and column)
+i = 1
+j = 1 → matrix[0][1] == 1 && matrix[1][0] == 1 → keep
+
+j = 2 → same → keep
+
+i = 2
+j = 1 → keep
+
+j = 2 → keep
+
+(no changes because no markers set in matrix[0][j] or matrix[i][0] except first cell)
+
+🔁 Step 3: Handle first row
+Check: matrix[0][0] == 0 → YES
+→ Set matrix[0][1] and matrix[0][2] to 0
+
+Now:
+
+Copy
+Edit
+0 0 0
+1 1 1
+1 1 1
+🔁 Step 4: Handle first column
+Check: col0 == 0 → YES
+→ Set matrix[i][0] = 0 for all i
+
+✅ Final Matrix:
+Copy
+Edit
+0 0 0
+0 1 1
+0 1 1
+
+
