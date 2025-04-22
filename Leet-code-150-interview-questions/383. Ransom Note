@@ -1,0 +1,62 @@
+3 approach from 20 to 100% beats:)
+
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        unordered_map<char, int> mpp;
+        for(auto i: magazine){
+            mpp[i]++;
+        }
+        for(auto i: ransomNote){
+            if(mpp.find(i) != mpp.end() && mpp[i] != 0){
+                mpp[i]--;
+            }else{
+                return false;
+            }
+        }
+        return true;
+    }
+};
+
+
+better then above
+
+class Solution {
+public:
+int countOccurrences(const string& str, char c){
+    return count(str.begin(), str.end(), c);
+}
+    bool canConstruct(string ransomNote, string magazine) {
+        if(ransomNote.length() > magazine.length()) return false;
+
+        unordered_set<char> cet(ransomNote.begin(), ransomNote.end());//contains all the unique character from the ransomeNote
+
+        for(auto c: cet){
+            if(countOccurrences(magazine, c) < countOccurrences(ransomNote, c)){
+                return false;
+            }
+        }
+        return true;
+    }
+};
+
+
+better then above
+
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        int freq[26] = {0};
+
+        for(auto c: magazine) freq[c-'a']++;
+        for(auto c: ransomNote){
+            if(--freq[c-'a']<0) return false; //what ever count we have if on subtracting it come to be negative then it means it was zero and now u made it <0 (negative) so it probably missing so its false;
+        }
+        return true;
+    }
+};
+
+
+
+
+
