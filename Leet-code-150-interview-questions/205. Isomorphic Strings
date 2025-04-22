@@ -1,0 +1,69 @@
+# Code 
+```cpp []
+class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        unordered_map<char, char> mpp;
+        set<char> st;
+        for(int i=0; i<s.length(); i++){
+           if(mpp.find(s[i]) == mpp.end()){
+                if(st.find(t[i]) != st.end()) return false;
+                else st.insert(t[i]);
+                mpp[s[i]] = t[i]; 
+           }else{
+                if(mpp[s[i]] != t[i]){
+                    return false;
+                }
+           }
+        }
+        return true;
+    }
+};
+```
+# better then above
+
+```cpp []
+class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        unordered_map<char, int> mpps;
+        unordered_map<char, int> mppt;
+
+        for(int i=0; i<s.length(); i++){
+            if(mpps.find(s[i]) == mpps.end()) mpps[s[i]] = i;
+
+            if(mppt.find(t[i]) == mppt.end()) mppt[t[i]] = i;
+
+            if(mpps[s[i]] != mppt[t[i]]) return false;
+        }
+        return true;
+    }
+    
+};
+```
+# better then above
+
+# Code
+```cpp []
+class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        unordered_map<char, char> mpp;
+
+        for(int i=0; i<s.length(); i++){
+            char cs = s[i];
+            char ct = t[i];
+
+            if(mpp.find(cs) != mpp.end()){
+                if(mpp[cs] != ct) return false;
+            }else{
+                for(auto &ch: mpp){
+                    if(ch.second == t[i]) return false;
+                }
+                mpp[cs] = ct;
+            }
+        }
+        return true;
+    }
+};
+```
