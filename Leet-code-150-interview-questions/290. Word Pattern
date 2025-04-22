@@ -1,0 +1,34 @@
+class Solution {
+public:
+    bool wordPattern(string pattern, string s) {
+        int n = pattern.length();
+        int m = count(s.begin(), s.end(), ' ') +1;
+        if(n != m) return false;
+
+        unordered_map<char, string> mpp;
+        int j = 0;
+        for(int i=0; i<n; i++){
+            char c = pattern[i];
+            string ch = "";
+            
+            while(s[j] != ' ' && j<s.length()){
+                ch += s[j++];
+            }
+            j++;
+
+            if(mpp.find(c) != mpp.end()){
+                if(mpp[c] != ch) return false;
+            }else{
+                for(auto& j: mpp){
+                    if(j.second == ch) return false;
+                }
+
+                mpp[c] = ch;
+
+            }
+
+
+        }
+        return true;
+    }
+};
