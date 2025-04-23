@@ -1,0 +1,78 @@
+# Approach
+// this works to detect the cycle like in linked list or say person 1 jumps 1 time and 2nd person jumps 2 at a time then they will eventually meet in a circle u know what i mean:)
+
+
+# Code
+```cpp []
+
+
+class Solution {
+public:
+    bool isHappy(int n) {
+        int slow = digsum(n);
+        int fast = digsum(slow);
+
+        while(slow != fast){
+            if(fast == 1) return true;
+            slow = digsum(slow);
+            fast = digsum(digsum(fast));
+        }
+        return slow == 1;
+    }
+
+    int digsum(int n){
+        return (n==0)? 0: (n%10)*(n%10) + digsum(n/10);
+    }
+};
+
+
+// i beat it with my trick :)
+
+// class Solution {
+// public:
+//     bool isHappy(int n) {
+//         int cnt = 0;
+//         while(n){
+//             n = digsum(n);
+//             if(n==1) return true;
+
+//             cnt++;
+//             if(cnt == 10) return false;   
+//         }
+//         return false;
+
+//     }
+//     int digsum(int n){
+//         return (n == 0)? 0: (n%10)*(n%10) + digsum(n/10);
+//     }
+// };
+
+```
+
+# Approach
+ i beat it with my trick :)
+
+
+# Code
+```cpp []
+ class Solution {
+ public:
+     bool isHappy(int n) {
+         int cnt = 0;
+         while(n){
+             n = digsum(n);
+             if(n==1) return true;
+
+             cnt++;
+             if(cnt == 10) return false;   
+         }
+         return false;
+
+     }
+     int digsum(int n){
+         return (n == 0)? 0: (n%10)*(n%10) + digsum(n/10);
+     }
+ };
+
+```
+
