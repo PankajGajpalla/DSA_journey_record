@@ -1,0 +1,63 @@
+# Code
+```cpp []
+
+class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        unordered_map<int, int> mpp;
+
+        for(int i=0; i<nums.size(); i++){
+            int val = nums[i];
+            // if a value is present already in the mpp and its index difference is less then k then its our answer 
+            if(mpp.find(val) != mpp.end() && (i-mpp[val] <= k)){
+                return true;
+            } 
+            // if a value is not present then we put it in the map and even if it is present but dosnot satisfy the condition we update the value cause the previous value is not our answer;
+            mpp[val] = i;
+        }
+        return false;
+    }
+};
+```
+# Code
+```cpp []
+class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        unordered_set<int> seen;
+
+        for(int i=0; i<nums.size(); i++){
+            //if the window size is greater then k then we delete the value cauxe its not our answer
+            if(i>k){
+                seen.erase(nums[i-k-1]); // i-k is widow size and we need to delete item out side window so -1;|
+            }
+
+            if(seen.find(nums[i]) != seen.end()){
+                return true;
+            }
+
+            seen.insert(nums[i]);
+        }
+        return false;
+    }
+};
+```
+
+# Code
+```cpp []
+class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        for(int i=0; i<nums.size(); i++){
+            for(int j=i+1; j<nums.size() && j<=k+i; j++){
+                
+                if(nums[i] == nums[j]){
+                    if(abs(i-j)<= k) return true;
+                }
+            }
+        }
+        return false;
+    }
+};
+```
+
