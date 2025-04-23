@@ -1,0 +1,71 @@
+🔍 Why size 37?
+We need to find the maximum possible digit sum of any number from 1 to n.
+Since the problem says 1 <= n <= 10,000, the largest possible number is 9999.
+
+Let’s compute the digit sum of 9999:
+
+9 + 9 + 9 + 9 = 36
+So the maximum digit sum possible is 36, and you need indices 0 to 36 ⇒ 37 slots in total.
+
+# Code
+```cpp []
+class Solution {
+public:
+    // int digsum(int n){
+    //     int sum =0;
+    //     while(n){
+    //         sum += n%10;
+    //         n /= 10;
+    //     }
+    //     return sum;
+    // }
+
+
+    // int digsum(int n, int sum = 0){
+    //     string s = to_string(n);
+    //     for(auto i: s) sum+=i-'0';
+    //     return sum;
+    // }
+
+    int digsum(int n){
+        return n == 0 ? 0: n%10 + digsum(n/10);
+    }
+    
+    int countLargestGroup(int n) {
+        vector<int> sums(37); 
+        for(int i=1; i<=n; i++) sums[digsum(i)]++;
+
+        int maxi = 0, count = 0;
+        for(auto i: sums){
+            if(i>maxi) maxi = i, count = 1; //finding the maximum and again reseting the count to 0;
+            else if(i==maxi) count++; // if the maximum is still same then increment cnt++;
+        }
+        return count;
+    }
+};
+```
+
+# 💻 Hashmap Implementation
+``` cpp[]
+class Solution {
+public:
+    int countLargestGroup(int n, int maxi = 0, int count = 0) {
+        unordered_map <int,int> mpp;
+        for (int i = 1 ; i <= n ; i++) {
+            int x = digsum(i);
+            maxi = max(maxi, ++mpp[x]);
+        }
+        for (auto& p : mpp) if (p.second == maxi) ++count;
+        return count;
+    }
+    int digsum(int n) {
+        int sum = 0;
+        while (n) {
+            sum += n % 10;
+            n /= 10;
+        }
+        return sum;
+    }
+};
+```
+
