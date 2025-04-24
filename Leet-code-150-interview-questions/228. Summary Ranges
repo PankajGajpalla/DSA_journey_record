@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<string> summaryRanges(vector<int>& nums) {
+        int n = nums.size();
+        if(n==0) return {};
+
+        vector<string> ans;
+
+        int start = 0; //start set to 0
+        for(int i=1; i<=nums.size();i++){
+            //whenever we see i reaches end or the next number is not equal to previous we push the range and update the start 
+            if(i == n || nums[i] != nums[i-1]+1){ 
+                if( start == i-1) ans.push_back(to_string(nums[start])); // if its a singel value no range 
+                else{
+                    ans.push_back(to_string(nums[start])+"->"+to_string(nums[i-1])); //for range
+                }
+                start = i; //update start;
+            }
+        }
+        return ans;
+    }
+};
