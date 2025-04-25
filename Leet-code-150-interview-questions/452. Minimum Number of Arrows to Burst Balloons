@@ -1,0 +1,104 @@
+approach (just read this)
+first sort it ascending according to the ending index of each intervals
+take the first interval ka ending
+start comparing every intervals firdt value as we know the endings of this intervals are greater then the curr ending so we know it lies or not
+step by step
+🔷 Step 1: Sort by End of Intervals
+We sort the intervals by the ending value to make sure we always shoot at the earliest possible point to burst the most balloons.
+
+Sorted:
+
+cpp
+Copy
+Edit
+[[6,7], [3,9], [6,9], [1,10], [4,11], [9,12], [8,12]]
+🔷 Step 2: Initialize
+arrows = 1 → one arrow to start.
+
+end = 7 → shoot the first arrow at 7, which is the end of the first interval.
+
+🔷 Step 3: Iterate Through Balloons
+Loop from second balloon onwards:
+
+➤ i = 1 → [3,9]
+Starts at 3, which is ≤ end=7 → overlaps
+
+✅ Bursts with arrow at 7
+
+➤ i = 2 → [6,9]
+Starts at 6, still ≤ end=7 → overlaps
+
+✅ Bursts with arrow at 7
+
+➤ i = 3 → [1,10]
+Starts at 1, still ≤ end=7 → overlaps
+
+✅ Bursts with arrow at 7
+
+➤ i = 4 → [4,11]
+Starts at 4, still ≤ end=7 → overlaps
+
+✅ Bursts with arrow at 7
+
+➤ i = 5 → [9,12]
+Starts at 9 > end=7 → doesn't overlap
+
+❌ Needs a new arrow
+
+arrows = 2, end = 12
+
+➤ i = 6 → [8,12]
+Starts at 8 ≤ end=12 → overlaps
+
+✅ Bursts with arrow at 12
+
+✅ Final Answer: 2 arrows
+
+Code
+class Solution {
+public:
+    // bool comp(vector<int> &a, vector<int> &b){
+    //     return a[1]<b[1];
+    // }
+    int findMinArrowShots(vector<vector<int>>& points) {
+        // sort(points.begin(), points.end(), comp);
+        sort(points.begin(), points.end(), [](auto &a, auto &b){
+            return a[1]<b[1];
+        });
+
+        int arrows = 1;
+        int last = points[0][1];
+
+        for(int i=1; i<points.size(); i++){
+            if(last<points[i][0]){
+                arrows++;
+                last = points[i][1];
+            }
+        }
+        return arrows;
+    }
+};
+
+// class Solution {
+// public:
+//     int findMinArrowShots(vector<vector<int>>& points) {
+//         sort(points.begin(), points.end());
+
+//         int s = 0;
+//         int e = 0;
+
+//         int cnt = 1;
+//         for(int i=1; i<points.size(); i++){
+//             int j = i-1;
+//             while(j>=s){
+//                 if(!(points[j][0]<=points[i][0] && points[j][1]>=points[i][0])){
+//                     cnt++;
+//                     s = i;
+//                     break;
+//                 }
+//                 j--;
+//             }
+//         }
+//         return cnt;
+//     }
+// };
