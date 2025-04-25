@@ -1,0 +1,102 @@
+🧪 Example:
+cpp
+Copy
+Edit
+nums = [3, 2, 4], modulo = 2, k = 1
+We want to count how many subarrays have this property:
+
+Number of elements in subarray where nums[i] % modulo == k, when counted as cnt, must satisfy cnt % modulo == k.
+
+🛠 Key variables:
+prefix – running count of how many elements so far satisfy nums[i] % modulo == k
+
+count – a map that keeps track of how many times each prefix % modulo has occurred
+
+needed – the value of prefix we need in the map to make the current subarray interesting
+
+🔍 Step-by-step walkthrough
+Initial State:
+prefix = 0
+
+count = { 0: 1 } → this represents 1 way to have zero count at the beginning
+
+res = 0
+
+🔹 i = 0 → nums[0] = 3
+3 % 2 == 1, which equals k, so:
+
+prefix = 1
+
+needed = (prefix - k) % modulo = (1 - 1) % 2 = 0
+
+res += count[needed] = count[0] = 1
+
+res = 1
+
+Update map: count[1 % 2] += 1 → count[1] += 1
+
+New count = {0: 1, 1: 1}
+
+✅ Now we've found 1 interesting subarray: [3]
+
+🔹 i = 1 → nums[1] = 2
+2 % 2 == 0, not equal to k, so prefix stays 1
+
+needed = (1 - 1) % 2 = 0
+
+res += count[0] = 1 → res = 2
+
+Update map: count[1 % 2] += 1 → count[1] += 1
+
+New count = {0: 1, 1: 2}
+
+✅ We've found another interesting subarray: [3, 2]
+
+🔹 i = 2 → nums[2] = 4
+4 % 2 = 0 → not equal to k, so prefix still 1
+
+needed = (1 - 1) % 2 = 0
+
+res += count[0] = 1 → res = 3
+
+Update map: count[1] += 1 → count[1] = 3
+
+✅ Found: [3, 2, 4]
+
+✅ Final Answer: res = 3
+The interesting subarrays are:
+
+[3]
+
+[3, 2]
+
+[3, 2, 4]
+
+
+
+# Code
+```cpp []
+class Solution {
+public:
+    long long countInterestingSubarrays(vector<int>& nums, int modulo, int k) {
+       unordered_map<int, long long> count;
+       count[0] = 1;
+       long long res = 0;
+       int prefix_count = 0;
+
+       for(int num: nums){
+        if(num%modulo == k){
+            prefix_count++;
+        }
+
+        int needed = (prefix_count - k)%modulo;
+        if(needed<0) needed += modulo;
+
+        res += count[needed];
+        count[prefix_count % modulo]++;
+       } 
+
+       return res;
+    }
+};
+```
