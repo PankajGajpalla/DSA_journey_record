@@ -1,0 +1,52 @@
+# Intuition
+* declare a stack
+* initalize ans =0 , sign to track of 1 = +, -1 = -, number =0
+* loop over every charchter in s
+* if its a digit then if the number is already some value then we do number * 10 and then add the charecter ch-'0'
+* if ch == + : then whaterver answer we have we multiple it with the sign and then add it to answer , then make it number =0 and sign =1 for positive
+* u see as we get + now we change the sign after the answer
+
+* see the important point also is that as soon as we see '(' we store the current ans to stack and the current signature just after the ans
+* then we calculate new ans inside the bracket until the ')' is not reached and then
+* we multiply the ans inside the bracket with the outside sign and then add the stack top where the earliesr ans was 
+* stored 
+
+# Code
+```cpp []
+class Solution {
+public:
+    int calculate(string s) {
+        stack<int> st;
+        int ans =0, sign = 1, number = 0;
+
+        for(auto &ch: s){
+            if(isdigit(ch)){
+                number = number*10 + (ch-'0');
+            }else if(ch=='+'){
+                ans += sign*number;
+                number = 0;
+                sign =1;
+            }else if(ch=='-'){
+                ans += sign*number;
+                number =0;
+                sign =-1;
+            }else if(ch=='('){
+                st.push(ans);
+                st.push(sign);
+                ans = 0;
+                number = 0;
+                sign = 1;
+            }else if(ch==')'){
+                ans += sign*number;
+                number = 0;
+                int topsign = st.top(); st.pop();
+                ans*= topsign;
+                ans +=st.top(); 
+                st.pop();
+            }
+        }
+        ans+=sign*number;
+        return ans;
+    }
+};
+```
