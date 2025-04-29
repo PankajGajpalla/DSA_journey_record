@@ -1,0 +1,106 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* dummy = new ListNode();
+        ListNode* res = dummy;
+
+        int carry =0; 
+        int total = 0;
+
+        while(l1 || l2 || carry){
+            total = carry;
+
+            if(l1){
+                total += l1->val;
+                l1 = l1->next;
+            }
+            if(l2){
+                total += l2->val;
+                l2 = l2->next;
+            }
+
+            int num = total%10;
+            carry = total/10;
+
+            dummy->next = new ListNode(num);
+            dummy = dummy->next;
+        }
+
+        ListNode* result = res->next; //the first node is empty so we r creating a pinter next to it and then deleting the empty one
+        delete res;
+        return result;
+    }
+};
+
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    void addt(ListNode* &temp, int value){
+        ListNode* newnode = new ListNode(value);
+        temp->next = newnode;
+        temp = newnode;
+    }
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        
+        if(!l1) return l2;
+        if(!l2) return l1;
+
+        ListNode* n1 = l1;
+        ListNode* n2 = l2;
+
+        ListNode* ans = new ListNode();
+        ListNode* temp = ans;
+        int value = 0;
+        int carry = 0;
+
+        while(n1 != NULL && n2 != NULL){
+            int sum = n1->val + n2->val + carry;
+            value = sum%10;
+            carry = sum/10;
+            addt(temp, value);
+            n1 = n1->next;
+            n2 = n2->next;
+        }
+        while(n1 != NULL){
+            int sum = n1->val + carry;
+            value = sum%10;
+            carry = sum/10;
+            addt(temp, value);
+            n1 = n1->next;
+        }
+        while(n2 != NULL){
+            int sum = n2->val + carry;
+            value = sum%10;
+            carry = sum/10;
+            addt(temp, value);
+            n2 = n2->next;
+        }
+
+        if(carry !=0){
+            addt(temp, carry);
+        }
+
+        return ans->next;
+    }
+};
