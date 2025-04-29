@@ -1,0 +1,53 @@
+
+
+# Code
+```cpp []
+class Solution {
+public:
+    long long countSubarrays(vector<int>& nums, int k) {
+        long long maxi = nums[0];
+        for(int i=0; i<nums.size(); i++){
+            maxi = max(maxi, nums[i]*1LL);
+        }
+
+        long long count = 0;
+        long long left = 0;
+        int cnt = 0;
+        for(long long right=0; right<nums.size(); right++){
+            if(nums[right] == maxi) cnt++;
+            while(cnt==k){
+                count+=nums.size()-(right);
+                if(nums[left]==maxi) cnt--;
+                left++;
+            }            
+        }
+        return count;
+    }
+};
+```
+
+# brute force
+```cpp []
+class Solution {
+public:
+    long long countSubarrays(vector<int>& nums, int k) {
+        long long maxi = nums[0];
+        for(int i=0; i<nums.size(); i++){
+            maxi = max(maxi, nums[i]*1LL);
+        }
+
+        long long count = 0;
+        for(long long i=0; i<nums.size(); i++){
+            int cnt = 0;
+            for(long long j=i; j<nums.size(); j++){
+                if(nums[j]==maxi) cnt++;
+                if(cnt == k){
+                    count+=(nums.size()-j);
+                    break;
+                }
+            }
+        }
+        return count;
+    }
+};
+```
