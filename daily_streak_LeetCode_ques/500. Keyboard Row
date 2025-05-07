@@ -1,0 +1,16 @@
+class Solution:
+    def findWords(self, words: List[str]) -> List[str]:
+        ck = ["qwertyuiop", "asdfghjkl", "zxcvbnm"]
+        ans = []
+        for a in words:
+            for b in ck:
+                flag = 0
+                for i in a.lower():
+                    if i not in b:
+                        flag=1
+                        break
+                if flag==0:
+                    ans.append(a)
+                    break
+        
+        return ans
