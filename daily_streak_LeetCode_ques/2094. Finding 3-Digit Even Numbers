@@ -1,0 +1,58 @@
+class Solution {
+public:
+    vector<int> findEvenNumbers(vector<int>& digits) {
+        vector<int> mpp(10, 0);
+        for (int i = 0; i < digits.size(); i++)
+            mpp[digits[i]]++;
+
+        vector<int> res;
+        for (int i = 1; i <= 9; i++) {
+            if (mpp[i] == 0) continue;
+            mpp[i]--;
+
+            for (int j = 0; j <= 9; j++) {
+                if (mpp[j] == 0) continue;
+                mpp[j]--;
+                for (int k = 0; k <= 8; k += 2) {
+                    if (mpp[k] == 0) continue;
+                    res.push_back(i*100 + j*10 + k);
+                }
+                mpp[j]++;
+
+            }
+            mpp[i]++;
+        }
+        return res;
+    }
+};
+
+
+
+
+
+class Solution {
+public:
+    vector<int> findEvenNumbers(vector<int>& digits) {
+        if(digits.size() <3) return{};
+        sort(digits.begin(), digits.end());
+        set<int> sna;
+        vector<int> ans;
+        int n = digits.size();
+        for(int i=0; i<n; i++){
+            if(digits[i] == 0) continue;
+            for(int j=0; j<n; j++){
+                if(j==i) continue;
+                for(int k=0; k<n; k++){
+                    if(k==i || k==j) continue;
+                    if(digits[k]%2 !=0) continue;
+                    int num = ((digits[i]*100) + (digits[j]*10) + digits[k]);
+                    sna.insert(num);
+
+                }
+            }
+        }
+        ans.assign(sna.begin(), sna.end());
+        return ans;
+    }
+};
+
