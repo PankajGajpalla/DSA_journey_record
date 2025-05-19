@@ -1,0 +1,133 @@
+# Intuition
+
+### Create a class
+first create a node class that have
+* key (int)
+* value (int)
+* next pointer
+* prev pointer
+
+create a capacity to have a fixed size
+
+create a hashmap with int and Node* mpp
+
+create a additional head and tail with key=-1 & value = -1
+
+### LRUCache
+initalize the LRUCache constructor by 
+* set capacity
+* an empty doubly linked list with only head<=>tail linked
+
+### todelete
+removeing the node and fixing the prev and next of it
+
+### insert_at_head
+after the additional head we add a node and linke it to the heads->next 
+so inserting it between head and head->next
+
+### get 
+if not present return -1;
+else remove it from its location and insert it at head
+
+### put 
+if already present then
+* get that node with that key and change its value
+* delete it and insert at head
+
+else
+    if the capacity if full then 
+* remove its presence from the map
+* delete the node at tail->prev the last node 
+
+* insert a newnode at head
+* add it to mapp also
+
+    else
+* insert a newnode at head and 
+* put it in mapp
+
+
+# Code
+```cpp []
+class LRUCache {  
+public:
+    class Node{
+        public:
+            int key, value;
+            Node* next, *prev;
+
+            Node(int key, int value){
+                this->key = key;
+                this->value = value;
+                next = NULL;
+                prev = NULL;
+            }
+    };
+    int capacity;
+    unordered_map<int , Node*> mpp;
+
+    Node* head = new Node(-1,-1);
+    Node* tail = new Node(-1,-1);
+
+    
+    
+    LRUCache(int capacity) {
+        this->capacity = capacity;
+        head->next = tail;
+        tail->prev = head;
+    }
+    void todelete(Node* node){
+        node->prev->next = node->next;
+        node->next->prev = node->prev;
+    }
+    void insert_at_head(Node* node){
+        Node* temp = head->next;
+        head->next = node;
+        node->prev = head;
+
+        node->next = temp;
+        temp->prev = node;
+    }
+    int get(int key) {
+        if(mpp.find(key) == mpp.end()){
+            return -1;
+        }else{
+            Node* temp = mpp[key];
+            todelete(temp);
+            insert_at_head(temp);
+            return temp->value;
+        }
+    }
+    
+    void put(int key, int value) {
+        if(mpp.find(key) != mpp.end()){
+            // mpp.erase(mpp[key]);
+            Node* temp = mpp[key];
+            temp->value = value;
+            todelete(temp);
+            insert_at_head(temp);
+
+        }else{
+            Node* newnode = new Node(key, value);
+            if(mpp.size() == capacity){
+                Node* todel = tail->prev;
+                mpp.erase(tail->prev->key);
+                todelete(tail->prev);
+                insert_at_head(newnode);
+                mpp[key] = newnode;
+                delete todel;
+            }else{
+                insert_at_head(newnode);
+                mpp[key] = newnode;
+            }
+        }
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
+```
