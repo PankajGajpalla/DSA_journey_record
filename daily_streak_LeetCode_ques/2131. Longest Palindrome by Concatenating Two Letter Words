@@ -1,0 +1,26 @@
+class Solution {
+public:
+    
+    int longestPalindrome(vector<string>& words) {
+        
+        unordered_map<string, int> mpp;
+        for(string s: words) mpp[s]++;
+
+        int count = 0, theOne = 0;
+
+        for(auto& [W, freq]: mpp){
+            string S = W;
+            reverse(S.begin(), S.end());
+
+            if(S == W){
+                count += (freq/2)*4;
+                if(freq%2) theOne = 1;
+            }
+            else if(W<S && mpp.count(S)){
+                count += min(freq, mpp[S])*4;
+            }
+        }
+
+        return count + theOne*2;
+    }
+};
