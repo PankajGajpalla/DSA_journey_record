@@ -1,0 +1,335 @@
+class TrieNode{
+    public:
+    char data;
+    TrieNode* children[26];
+    bool isTerminal;
+
+    TrieNode(char data){
+        this->data = data;
+        isTerminal = false;
+
+        for(int i=0; i<26; i++){
+            children[i] = NULL;
+        }
+    }
+};
+
+class Trie{
+    public:
+    TrieNode* root;
+
+    Trie(){
+        root = new TrieNode('\0');
+    }
+
+    void insertUtil(TrieNode* root, string word){
+
+        if(word.length() == 0){
+            root->isTerminal = true;
+            return;
+        }
+
+        TrieNode* child;
+        int index = word[0] - 'a';
+
+        if(root->children[index] != NULL){
+            child = root->children[index];
+        }else{
+            child = new TrieNode(word[0]);
+            root->children[index] = child;
+        }
+
+        insertUtil(child, word.substr(1));
+    }
+
+    void insertWord(string word){
+        insertUtil(root, word);
+    }
+
+    void printSuggestions(TrieNode* curr, vector<string>& temp, string prefix){
+        if(curr->isTerminal){
+            
+            temp.push_back(prefix);
+        }
+
+        for(char ch='a'; ch<='z'; ch++){
+            TrieNode* nxt = curr->children[ch-'a'];
+
+            if(nxt != NULL){
+                prefix.push_back(ch);
+                printSuggestions(nxt, temp, prefix);
+                prefix.pop_back();
+            }
+        }
+        
+
+    }
+    vector<vector<string>> getSuggestion(string queryStr){
+        TrieNode* prev = root;
+        vector<vector<string>> output;
+        string prefix = "";
+
+        for(int i=0; i<queryStr.length(); i++){
+            char lstch = queryStr[i];
+
+            prefix.push_back(lstch);
+
+            TrieNode* curr = prev->children[lstch-'a'];
+
+            if(curr == NULL){
+                break;
+            }
+
+            vector<string> temp;
+            printSuggestions(curr, temp, prefix);
+            output.push_back(temp);
+            temp.clear();
+
+            prev = curr;
+        }
+
+        return output;
+    }
+
+};
+
+
+
+
+vector<vector<string>> phoneDirectory(vector<string>&contactList, string &queryStr)
+{
+    //    Write your code here.
+    Trie* t = new Trie();
+
+    for(int i=0; i<contactList.size(); i++){
+        string st = contactList[i];
+        t->insertWord(st);
+    }
+
+    return t->getSuggestion(queryStr);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sure Luffy! Here's a fully **commented explanation** of your entire **phone directory Trie code** — with step-by-step guidance, logic, and an example — so you can quickly recall everything next time.
+
+---
+
+### ✅ **Purpose of the Code**
+
+Build a **phone contact suggestion system** using a **Trie**.
+When the user types each character of a query (e.g., "car"), the system shows **all matching contacts** with that prefix so far.
+
+---
+
+### 📦 Classes and Functions
+
+---
+
+### 1️⃣ `TrieNode` – Node structure for Trie
+
+```cpp
+class TrieNode {
+public:
+    char data;                        // character stored in this node
+    TrieNode* children[26];           // array for 'a' to 'z' children
+    bool isTerminal;                  // true if this node ends a valid word
+
+    TrieNode(char data) {
+        this->data = data;
+        isTerminal = false;
+
+        // Initialize all children to NULL
+        for(int i = 0; i < 26; i++) {
+            children[i] = NULL;
+        }
+    }
+};
+```
+
+---
+
+### 2️⃣ `Trie` – Main Trie class with operations
+
+```cpp
+class Trie {
+public:
+    TrieNode* root;
+
+    Trie() {
+        root = new TrieNode('\0');  // root is empty char
+    }
+
+    // Recursive insert helper
+    void insertUtil(TrieNode* root, string word) {
+        if (word.length() == 0) {
+            root->isTerminal = true;  // mark end of word
+            return;
+        }
+
+        int index = word[0] - 'a';
+        TrieNode* child;
+
+        if (root->children[index] != NULL) {
+            child = root->children[index];
+        } else {
+            child = new TrieNode(word[0]);
+            root->children[index] = child;
+        }
+
+        // insert rest of the word
+        insertUtil(child, word.substr(1));
+    }
+
+    // Public method to insert word
+    void insertWord(string word) {
+        insertUtil(root, word);
+    }
+
+    // Collect suggestions from given node and prefix
+    void printSuggestions(TrieNode* curr, vector<string>& temp, string prefix) {
+        if (curr->isTerminal) {
+            temp.push_back(prefix); // found a complete word
+        }
+
+        // explore all children from current node
+        for (char ch = 'a'; ch <= 'z'; ch++) {
+            TrieNode* next = curr->children[ch - 'a'];
+            if (next != NULL) {
+                prefix.push_back(ch);                     // add character to prefix
+                printSuggestions(next, temp, prefix);     // go deeper
+                prefix.pop_back();                        // backtrack
+            }
+        }
+    }
+
+    // Return all prefix-wise suggestions as user types queryStr
+    vector<vector<string>> getSuggestion(string queryStr) {
+        TrieNode* prev = root;
+        vector<vector<string>> output;
+        string prefix = "";
+
+        for (int i = 0; i < queryStr.length(); i++) {
+            char lastCh = queryStr[i];
+            prefix.push_back(lastCh);
+            TrieNode* curr = prev->children[lastCh - 'a'];
+
+            if (curr == NULL) {
+                break; // no more matches
+            }
+
+            vector<string> temp;
+            printSuggestions(curr, temp, prefix);  // get all words from here
+            output.push_back(temp);
+            prev = curr;  // move deeper
+        }
+
+        return output;
+    }
+};
+```
+
+---
+
+### 3️⃣ `phoneDirectory` – Driver function
+
+```cpp
+vector<vector<string>> phoneDirectory(vector<string>& contactList, string &queryStr) {
+    Trie* t = new Trie();
+
+    // Insert all contact names into Trie
+    for (int i = 0; i < contactList.size(); i++) {
+        t->insertWord(contactList[i]);
+    }
+
+    // Return suggestions for each character typed
+    return t->getSuggestion(queryStr);
+}
+```
+
+---
+
+### ✅ Example Walkthrough
+
+#### Given:
+
+```cpp
+vector<string> contacts = {"car", "care", "cart", "cat", "dog", "doll"};
+string query = "car";
+```
+
+---
+
+#### Steps:
+
+1. All contacts are inserted into Trie.
+
+2. As the user types `"c"`, Trie gives:
+
+   ```
+   ["car", "care", "cart", "cat"]
+   ```
+
+3. Then after typing `"a"`:
+
+   ```
+   ["car", "care", "cart", "cat"]
+   ```
+
+4. After typing `"r"`:
+
+   ```
+   ["car", "care", "cart"]
+   ```
+
+---
+
+### 🔁 Final Output:
+
+```cpp
+[
+  ["car", "care", "cart", "cat"],  // after 'c'
+  ["car", "care", "cart", "cat"],  // after 'a'
+  ["car", "care", "cart"]          // after 'r'
+]
+```
+
+---
+
+### 🧠 Why It Works
+
+* Trie stores contacts in character-wise paths.
+* As we go deeper with each query letter, we get matching words.
+* `printSuggestions()` explores **all valid continuations** from a node using DFS.
+
+---
+
+### ⚠️ Key Points to Remember
+
+* Always pass `temp` by reference to collect results correctly.
+* Do not use `return` in `isTerminal` check — you’ll miss longer matching words.
+* Use `prefix.pop_back()` after recursion to restore previous prefix (backtracking).
+
+---
+
+Let me know if you want this as a PDF or visual Trie diagram too!
