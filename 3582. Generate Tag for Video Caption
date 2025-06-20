@@ -1,0 +1,15 @@
+class Solution:
+    def generateTag(self, caption: str) -> str:
+        
+        words = caption.strip().split(" ")
+
+        if not words:
+            return "#"
+
+        camelwords =  [words[0].lower()] + [w.capitalize() for w in words[1:]] #we cant add string here cause we are doing list addition so sepratly wll do it below
+        taged = "#" + ''.join(camelwords)        
+
+        clean_tag = "#" + ''.join([c for c in taged[1:] if c.isalpha()])
+
+        return clean_tag[:100]
+        
