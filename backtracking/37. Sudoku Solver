@@ -1,0 +1,38 @@
+class Solution {
+public:
+    bool issafe(int val, int row, int col, int n, vector<vector<char>>&board){
+        char ch = val+'0';
+        for(int i=0; i<n; i++){
+            if(board[row][i] == ch) return false;
+            if(board[i][col] == ch) return false;
+            if(board[3*(row/3) + i/3][3*(col/3)+i%3] == ch) return false;
+        }
+        return true;
+    }
+
+    bool solve(vector<vector<char>>&board , int n){
+        for(int row=0; row<n; row++){
+            for(int col=0; col<n; col++){
+                if(board[row][col] == '.'){
+                    for(int i=1; i<=9; i++){
+                        if(issafe(i, row, col, n, board)){
+                            board[row][col] = i+'0';
+                            if(solve(board, n)){
+                                return true;
+                            }
+                            board[row][col] = '.';
+                        }
+                    }
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    void solveSudoku(vector<vector<char>>& board) {
+        int n =board[0].size();
+        solve(board, n);
+    }
+};
