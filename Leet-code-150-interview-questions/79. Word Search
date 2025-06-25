@@ -1,0 +1,27 @@
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        for row in range(len(board)):
+            for col in range(len(board[0])):
+                if(board[row][col] == word[0]):
+                    if self.dfs(board, row, col, word):
+                        return True
+        
+        return False
+
+
+    def dfs(self, board, row, col, word):
+        if not word:
+            return True
+        
+        if( (0<= row < len(board)) and (0<= col <len(board[0]) and (board[row][col] != '#') and (board[row][col] == word[0]))):
+            placeholder = board[row][col]
+            board[row][col] = '#'
+
+            for row_inc, col_inc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                if self.dfs(board, row+row_inc, col+col_inc, word[1:]): #when this returns false that means its value is used in if condition only ok not for returing the overall value of the function
+                    return True
+            
+            board[row][col] = placeholder
+            return False
+        
+        return False
