@@ -1,0 +1,45 @@
+#include <bits/stdc++.h> 
+vector<int> dijkstra(vector<vector<int>> &vec, int vertices, int edges, int source) {
+    // Write your code here.
+    unordered_map<int, list<pair<int, int>>> adj;
+
+    for(auto i: vec){
+        int u = i[0];
+        int v = i[1];
+        int w = i[2];
+
+        adj[u].push_back(make_pair(v, w));
+        adj[v].push_back(make_pair(u, w));
+    }
+
+    vector<int> dis(vertices, INT_MAX);
+    dis[source] = 0;
+
+    set<pair<int, int>> st;
+    st.insert(make_pair(0, source)); //we inserting wait first then node to insert into set in a sorted order to acces the short distance first as it is important greedy approch of dijkastra 
+
+    while(!st.empty()){
+        auto top = *(st.begin());
+        
+        int nodeDistance = top.first;
+        int topNode = top.second;
+        
+        st.erase(st.begin());
+
+        for(auto i: adj[topNode]){
+            if((nodeDistance + i.second)< dis[i.first]){
+                
+                auto record = st.find(make_pair(dis[i.first], i.first));
+                //if record is found then we will delete it as we have a better path
+                if(record != st.end()){
+                    st.erase(record);
+                }
+
+                dis[i.first] = nodeDistance + i.second;
+                st.insert(make_pair(dis[i.first], i.first));
+            }
+        }
+    }
+
+    return dis;
+}
