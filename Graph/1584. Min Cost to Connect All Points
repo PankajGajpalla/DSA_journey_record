@@ -1,0 +1,69 @@
+class Solution {
+struct node
+{
+    int u, v, wt;
+    node(int first, int second, int weight){
+        u = first;
+        v = second;
+        wt = weight;
+    }
+};
+public:
+
+    bool static cmp(node a, node b){
+        return (a.wt)<(b.wt);
+    }
+
+    int findParents(int v, vector<int> &parent){
+        if(parent[v] == v) return v;
+
+        return parent[v] = findParents(parent[v], parent);
+    }
+
+    void unionSet(int n, int m, vector<int> &parent, vector<int> &rank){
+        int x = findParents(n, parent);
+        int y = findParents(m, parent);
+
+        if(rank[x]<rank[y]){
+            parent[x] = y;
+        }else if(rank[x]>rank[y]){
+            parent[y] = x;
+        }else{
+            parent[y] = x;
+            rank[x]++;
+        }
+    }
+
+    int minCostConnectPoints(vector<vector<int>>& points) {
+        vector<node> edges;
+        for(int i=0; i<points.size(); i++){
+            for(int j=i+1; j<points.size(); j++){
+                int wt = abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1]);
+                edges.push_back(node(i, j, wt));
+            }
+        }
+
+        sort(edges.begin(), edges.end(), cmp);
+
+        vector<int> parent(points.size());
+        vector<int> rank(points.size(), 0);
+
+        for(int i=0; i<points.size(); i++){
+            parent[i] = i;
+        }
+
+        int minW = 0;
+
+        for(auto &p: edges){
+            int u = findParents(p.u, parent);
+            int v = findParents(p.v, parent);
+            int w = p.wt;
+
+            if(u != v){
+                unionSet(u, v, parent, rank);
+                minW += w;
+            }
+        }
+        return minW;
+    }
+};
