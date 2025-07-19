@@ -1,0 +1,47 @@
+class Solution {
+public:
+    int snakesAndLadders(vector<vector<int>>& board) {
+        int length = board.size();
+        
+        queue<pair<int, int>> q;
+        q.push({1,0});
+        vector<bool> visited(length * length + 1, false);
+        visited[1] = true;
+
+        while(!q.empty()){
+            int square = q.front().first;
+            int move = q.front().second;
+            q.pop();
+
+            for(int i=1; i<7; i++){
+                int nextSquare = square + i;
+                if(nextSquare > length*length) continue;
+
+                pair<int, int> pos = intToPos(nextSquare, length);
+                int r = pos.first, c = pos.second;
+                
+                if(board[r][c] != -1){
+                    nextSquare = board[r][c];
+                }
+                if(nextSquare == length*length){
+                    return move + 1;
+                }
+                if(!visited[nextSquare]){
+                    visited[nextSquare] = true;
+                    q.push({nextSquare, move+1});
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    pair<int, int> intToPos(int square, int length){
+        int r = length - 1 -((square-1)/ length);
+        int c = (square-1)%length;
+        if((length-1-r)%2 == 1){
+            c = length - c - 1;
+        }
+        return {r, c};
+    }
+};
