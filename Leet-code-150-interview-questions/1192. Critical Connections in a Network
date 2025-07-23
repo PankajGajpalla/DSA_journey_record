@@ -1,0 +1,48 @@
+class Solution {
+public:
+    void dfs(int node, int &parent, vector<int>&low, vector<int>& insT, vector<int>& visited, vector<vector<int>>& result, int &timer, unordered_map<int, list<int>>&adj){
+
+        visited[node] = 1;
+        low[node] = insT[node] = timer++;
+
+        for(auto ngbh: adj[node]){
+            if(ngbh == parent) continue;
+            if(!visited[ngbh]){
+                dfs(ngbh, node, low, insT, visited, result, timer, adj);
+            low[node] = min(low[node], low[ngbh]);
+            //check edge is bridge?
+            if(low[ngbh]>insT[node]){
+                vector<int> ans;
+                ans.push_back(node);
+                ans.push_back(ngbh);
+                result.push_back(ans);
+            }
+            }else{
+                low[node] = min(low[node], insT[ngbh]);
+            }
+        }
+    }
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
+        unordered_map<int, list<int>> adj;
+        for(int i=0; i<connections.size(); i++){
+            adj[connections[i][0]].push_back(connections[i][1]);
+            adj[connections[i][1]].push_back(connections[i][0]);
+        }
+
+        int timer = 0;
+        vector<int> low(n, -1);
+        vector<int> insT(n, -1);
+        int parent = -1;
+        vector<int> visited(n,0);
+        vector<vector<int>> result;
+
+        for(int i=0; i<n; i++){
+            if(!visited[i]){
+                dfs(i, parent, low, insT, visited, result, timer, adj);
+            }
+        }
+
+        return result;
+
+    }
+};
