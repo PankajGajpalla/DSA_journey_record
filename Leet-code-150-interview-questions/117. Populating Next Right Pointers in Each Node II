@@ -1,0 +1,151 @@
+Intuition
+✅ Step-by-Step Execution:
+🔹 Initial Setup:
+curr = root → curr = 1
+
+🔁 First Level (Level 0: just node 1)
+dummy(0) created
+
+tail = &dummy
+
+Now scan the level:
+
+curr = 1
+
+curr->left = 2 → connect: tail->next = 2, tail = 2
+
+curr->right = 3 → connect: tail->next = 3, tail = 3
+
+curr = curr->next = NULL (end of level)
+
+🌱 Now:
+
+cpp
+Copy
+Edit
+dummy → 2 → 3 → NULL
+Set curr = dummy.next = 2 (start of next level)
+
+🔹 Second Level (Level 1: nodes 2 → 3)
+dummy(0) created again
+
+tail = &dummy
+
+Now scan level 1:
+
+curr = 2
+
+curr->left = 4 → connect: tail->next = 4, tail = 4
+
+curr->right = 5 → connect: tail->next = 5, tail = 5
+
+curr = curr->next = 3
+
+curr = 3
+
+curr->left = NULL (skip)
+
+curr->right = 7 → connect: tail->next = 7, tail = 7
+
+curr = curr->next = NULL (end of level)
+
+🌱 Now:
+
+cpp
+Copy
+Edit
+dummy → 4 → 5 → 7 → NULL
+Set curr = dummy.next = 4 (start of next level)
+
+🔹 Third Level (Level 2: nodes 4 → 5 → 7)
+dummy(0) created again
+
+tail = &dummy
+
+Now scan level 2:
+
+curr = 4
+
+No children → skip
+
+curr = curr->next = 5
+
+curr = 5
+
+No children → skip
+
+curr = curr->next = 7
+
+curr = 7
+
+No children → skip
+
+curr = curr->next = NULL
+
+dummy has no children this time → dummy.next = NULL
+
+Set curr = dummy.next = NULL → end loop
+
+✅ Final next pointers:
+1 → NULL
+
+2 → 3 → NULL
+
+4 → 5 → 7 → NULL
+
+🎉 Done!
+
+⏱ Time Complexity: O(N) — each node is visited once
+🧠 Space Complexity: O(1) — constant extra space (excluding recursion stack if used)
+
+Code
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+    Node* next;
+
+    Node() : val(0), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val, Node* _left, Node* _right, Node* _next)
+        : val(_val), left(_left), right(_right), next(_next) {}
+};
+*/
+
+class Solution {
+public:
+    Node* connect(Node* root) {
+        if(!root) return root;
+
+        Node* curr = root;
+
+        while(curr){
+            Node* dummy = new Node(0);
+            Node* tail = dummy;
+
+            while(curr){
+                if(curr->left){
+                    tail->next = curr->left;
+                    tail = tail->next;
+                }
+                if(curr->right){
+                    tail->next = curr->right;
+                    tail = tail->next;
+                }
+                curr = curr->next;
+            }
+
+            curr = dummy->next;
+            delete(dummy);
+        }
+
+        return root;
+    }
+};
+
+//ask chatgpt for step by step execution if you dont understand
