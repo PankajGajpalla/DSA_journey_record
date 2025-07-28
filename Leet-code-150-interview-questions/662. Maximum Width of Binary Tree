@@ -1,0 +1,57 @@
+# Intuition
+* its a normal bfs traversal but just in q we are inserting a pair to track the index of the node so that even if some index are missing we have know exactly what nodes on that level we have
+* so the formula 2*i + 1 for(left) , 2*i + 2 for(right) where i is the index of the above node that we put 
+* so its like 
+* for the root    0
+* (2*0 + 1) = 1 and (2*0 + 2) = 2          (firstlevel) i=0
+* (2*1 + 1) = 3 and (2*1 + 2) = 4  , (2*2 + 1) =5 and (2*2 + 2)=6  (i=1,2)
+* and so on just to show u how this formula work correctly for their child nodes and we get a right indexing for all u try it..
+* to calculate the max_width we calculate width of each level and keep the maxwidth
+* we calculate the width by subtracting the last index - first index +1
+* remember its a queue so lets say we have 5,3,null, 9 in our last level so when we put it in a queue the q.front will give us 5and its index which is the starting index and the 9node index is last which will access through q.back().second and subtract and add 1 to correct it 
+* done and dusted:)
+
+# Code
+```cpp []
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int widthOfBinaryTree(TreeNode* root) {
+        if(!root) return 0;
+        queue<pair<TreeNode*, unsigned long long>> q;
+        q.push({root, 0});
+
+        int max_w = 1;
+        while(!q.empty()){
+            unsigned long long s_ind = q.front().second; //this is queue not stack think lika a queue fifo
+            unsigned long long e_ind = q.back().second;
+            max_w = max(max_w, int(e_ind - s_ind + 1));
+            int size = q.size();
+            for(int i=0; i<size; i++){
+                auto curr = q.front();
+                q.pop();
+
+                if(curr.first->left){
+                    q.push({curr.first->left, 2*(curr.second)+1});
+                }
+                if(curr.first->right){
+                    q.push({curr.first->right, 2*(curr.second)+2});
+                }
+            }
+
+        }
+
+        return max_w;
+    }
+};
+```
