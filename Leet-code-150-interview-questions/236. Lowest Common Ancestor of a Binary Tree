@@ -1,0 +1,43 @@
+Intuition (just read!)
+do check out the prev question (235) for better understanding..
+if root == nullptr return nullptr
+if root == p or q then return the root as it is the ancestor
+search on the left side if either of the p or q is there..
+similarly search on the right side..
+then if you found both of them in left and right then the root itself is ancestor as u found them through the root;
+but if either of them is missing then that means one of them is null and the other contain the answer.. left or right
+so lets say both of them is present in the left then the left will call the root->left and check all the condition as above and find the answer and store it in left where as right didnt found and contain null so our answer will be the node that left have stored..
+if u r still confused then try to dry run and ull see how the last line
+return left? left : right; works
+by repeated calling the left stores the answer node and return it.
+image.png
+
+here p = 5 and q = 4
+
+first call and root->left,p,q now root->left is our root so the first condition says if root==p then return p so we return node p(5) so left = 5 and the right call return null with repeated call as nothing found..
+now left? left: right return left which is node 5 thats our ans.
+please upVote✌ thanku🙌:)
+Code
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(!root) return nullptr;
+        if(root==p || root==q) return root;
+
+        TreeNode* left = lowestCommonAncestor(root->left, p, q);
+        TreeNode* right = lowestCommonAncestor(root->right, p, q);
+
+        if(left && right) return root;
+
+        return left? left : right;
+    }
+};
