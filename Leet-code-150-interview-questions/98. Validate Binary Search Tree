@@ -1,0 +1,36 @@
+# Intuition
+* note:- We use LLONG_MIN instead of INT_MIN to ensure comparisons are valid even if a BST node has the minimum int value (INT_MIN), preventing incorrect false results.
+* if (INT_MIN <= INT_MIN) // true
+Which means your function falsely returns false, thinking the tree is invalid — even though it’s actually valid.
+
+* create a prev to track previous node value and compare it with root keep updating the prev just after u compare a node.. 
+* do it for left and right tree if they are valid return valid or else false..
+
+# Code
+```cpp []
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    long long prev = LLONG_MIN;
+    bool isValidBST(TreeNode* root) {
+        if(!root) return true;
+        bool left = isValidBST(root->left);
+        if(root->val <= prev) return false;
+        prev = root->val;
+        bool right = isValidBST(root->right);
+
+        return left && right;
+
+    }
+};
+```
