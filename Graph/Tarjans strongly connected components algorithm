@@ -1,0 +1,66 @@
+// for help:->    https://www.youtube.com/watch?v=ZeDNSeilf-Y
+
+
+#include<bits/stdc++.h>
+using namespace std;
+#define V 7
+#define pb push_back
+
+unordered_map<int, vector<int>> adj;
+
+void DFS(int u, vector<int>& disc, vector<int>& low, stack<int> &mystack, vector<bool>& presentInStack){
+    static int time = 0; //this is executed just one time when the dfs is called for the first time after that this is ignored
+    disc[u] = low[u] = time;
+    time +=1;
+    mystack.push(u);
+    presentInStack[u] = true;
+
+    for(auto v: adj[u]){
+        if(disc[v] == -1){ //if v is not visited
+            DFS(v, disc, low, mystack, presentInStack);
+            low[v] = min(low[v], low[u]); // for normal case this is used
+        }
+        // if its a visited node then u r visiting it again so is this a backedge or  a cross edge
+        else if(presentInStack[v] == true){ // for backedge
+            low[v] = min(low[v], disc[u]); //this is used for a backedge
+        }
+        // else for crossedge we ignore it 
+    }
+
+    if(disc[u] == low[u]){ //if u is headnode for SCC
+        cout<<"SCC is: ";
+        while(mystack.top() != u){
+            cout<<mystack.top()<<" ";
+            presentInStack[mystack.top()] = false;
+            mystack.pop();
+        }
+        cout<<mystack.top()<<"\n";
+        presentInStack[mystack.top()] = false;
+        mystack.pop();
+    }
+}
+void findSCC_Tarjan(){
+    vector<int> disc(V, -1), low(V, -1);
+    vector<bool> presentInStack(V, false);
+    stack<int> mystack;
+
+    for(int i=0; i<V; i++)
+        if(disc[i] == -1)
+            DFS(i, disc, low, mystack, presentInStack);
+}
+
+int main()
+{
+	adj[0].pb(1);
+	adj[1].pb(2);
+	adj[1].pb(3);
+	adj[3].pb(4);
+	adj[4].pb(0);
+	adj[4].pb(5);
+	adj[4].pb(6);
+	adj[5].pb(6);
+	adj[6].pb(5);
+
+	findSCC_Tarjan();
+	return 0;
+}
