@@ -1,0 +1,49 @@
+# Intuition
+representing a/b = 2 as a-2->b that is a graph from a to b with weight as 2 similarly createing a b/a for this same with weight 1/2 
+now lets say we 
+* first create a graph that is a map and put every thing in it then call the helper funcion dfs and find the answer
+* need to find a/c and we have a/b = 2, b/c = 3
+* then we will go from a-->b = 2 then
+* we wont go to b-->a as a is already visited so we go to b-->c
+* then we get 3 which we multiple with 2 and get 6 then we dont need to go anywhere else as we found a-->c = 6
+
+# Code
+```cpp []
+class Solution {
+public:
+    unordered_map<string, unordered_map<string, double>> graph;
+
+    double DFS(string start, string end, unordered_set<string>& visited){
+        if(graph.find(start) == graph.end() || graph.find(end) == graph.end()) return -1.0;
+        if(start == end) return 1.0;
+
+        visited.insert(start);
+        for(auto& [neighbour, val]: graph[start]){
+            if(visited.count(neighbour)) continue; //if visited then skip
+            double ref = DFS(neighbour, end, visited); //going to find the next unvisieted graph that is connected with the neighbour to reach the end
+            if(ref != -1) return val * ref; // if theres no connected graph and we get -1 then we keep searching till we get or dont get then return -1
+// but if ref is a value then we multiple :)
+        }
+        return -1.0;
+    }
+
+    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+        for(int i=0; i<equations.size(); i++){
+            string a = equations[i][0], b = equations[i][1];
+            double val = values[i];
+            graph[a][b] = val;
+            graph[b][a] = 1/val;
+        }
+
+        vector<double> ans;
+
+        for(int i=0; i<queries.size(); i++){
+            unordered_set<string> visited;
+            string start=queries[i][0], end=queries[i][1];
+            ans.push_back(DFS(start, end, visited));
+        }
+
+        return ans;
+    }
+};
+```
