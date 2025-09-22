@@ -1,0 +1,55 @@
+# just read and see the code :)
+* first we create an empty list for every course
+* then from prerequisites we create our adj list 
+* creating an visited set to keep track and detect for any loop or cycle
+* creating the dfs function inside so its easy to use the variables
+* its a dfs means recursion so our first base case is if already visited then return false
+* if it has an empty prerequist meaning its possible to complete that course
+* adding the course to visited
+* for the pres of the curr we check each ..
+* now going back we remove from the visited set
+* and make that currs pre as empty as it means its a possible course and the next time we come to it we dont need to check it again as the base case will directly return true for this
+* ....
+
+# Approach
+<!-- Describe your approach to solving the problem. -->
+
+# Complexity
+- Time complexity:
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity:
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+# Code
+```python3 []
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        
+        preMap = {i:[] for i in range(numCourses)}
+        for curr, pre in prerequisites:
+            preMap[curr].append(pre)
+        
+        visited = set()
+        def dfs(curr):
+            if curr in visited:
+                return False
+            if preMap[curr]==[]:
+                return True
+            
+            visited.add(curr)
+            for pre in preMap[curr]:
+                if not dfs(pre): return False
+            visited.remove(curr)
+            preMap[curr] = []
+            return True
+
+        for curr in range(numCourses):
+            if not dfs(curr): return False
+        return True
+            
+```
+
+
+# for more clear understanding u can check this out
+### https://www.youtube.com/watch?v=EgI5nU9etnU
