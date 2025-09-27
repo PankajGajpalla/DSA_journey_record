@@ -1,0 +1,28 @@
+# explanation
+* just consider the whole matrix as a single array and perform binary search...
+* calculate the mid and then derive its location in the matrix through rows and colmuns 
+* its simple whatever number we get if we divide it with col then surely we will get the number that indicates out row and if we calculate the mod of it we get the col think about it 
+* 5/4 = 1 for it to complete divide it, it shouldd be in multiple of 4 but if not then we get the nearst multiple divisible number and as it is 0 based indexing we get the correct row value:)
+* similarly if we think about it when we take mode with any number w.r.t its col value then we get the leftover extra value after the divisble like 5%4 = 1 which means that after completing the 4 columns the leftover number indicates its col location 0,1:)
+* try this particular thing and ull get it :)
+
+# Code
+```python3 []
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        row = len(matrix)
+        col = len(matrix[0])
+
+        start = 0
+        end = row*col -1
+        while(start<=end):
+            mid = start + int((end-start)/2)
+            element = matrix[int(mid/col)][int(mid%col)]
+            if(element==target): return True
+            elif(target<element): end = mid-1
+            else: start = mid+1
+        
+        return False
+
+        
+```
