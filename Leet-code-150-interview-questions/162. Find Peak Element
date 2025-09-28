@@ -1,0 +1,33 @@
+class Solution:
+    def findPeakElement(self, nums: List[int]) -> int:
+        low = 0
+        high = len(nums)-1
+
+        while(low<high):
+            mid = (high+low)//2
+            if(nums[mid] > nums[mid+1]): high=mid
+            else: low = mid+1
+        
+        return low
+
+
+
+# class Solution:
+#     def recursive_bs(self, nums: List[int], low: int, high: int)->int:
+#         if(low==high): return low
+#         mid = (low+high)//2
+#         if(nums[mid]>nums[mid+1]): return self.recursive_bs(nums, low, mid)
+#         else: return self.recursive_bs(nums, mid+1, high)
+#     def findPeakElement(self, nums: List[int]) -> int:
+#         return self.recursive_bs(nums, 0, len(nums)-1)
+
+# class Solution:
+#     def findPeakElement(self, nums: List[int]) -> int:
+#         n = len(nums)
+#         if(n==1): return 0
+#         k = max(nums)
+#         return nums.index(k)
+
+# class Solution:
+#     def findPeakElement(self, nums: List[int]) -> int:
+#         return nums.index(max(nums))
