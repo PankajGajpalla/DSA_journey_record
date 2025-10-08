@@ -1,0 +1,36 @@
+# Intuition (just read this )
+* try to dry run ull get it
+* first creating an empty list
+* iterating through each number in nums
+* each time creating a new_permutation
+* for all the list in perms (if empty then only this [] ) iterating through each of them 
+* then for the length of p which means for the length of a particular list + 1 ( we add one so that we can try to insert at all the possible positions for example [] only 0 position, [1] only 0 and 1 position that is in front of it and after it, similarly [1,2] we got 3 position len(p)+1 = 3 [_1_2_])..
+* each time we take a p (individual list from perms) and copy it and creat a new p of a different permutation by inserting n at different possible positions 
+* then we append it and after this loop we get a collection of new list and update the perms witha new_perms 
+* plz dry run and ull see it ur self....
+
+# Complexity
+- Time complexity:
+n! * n^2
+
+
+
+# Code
+```python3 []
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        
+        perms = [[]]
+
+        for n in nums:
+            new_perms = []
+            for p in perms:
+                for i in range(len(p)+1):
+                    p_copy = p.copy()
+                    p_copy.insert(i, n)
+                    new_perms.append(p_copy)
+            
+            perms = new_perms
+        
+        return perms
+```
