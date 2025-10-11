@@ -1,0 +1,19 @@
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        res = []
+
+        def backtrack(start, n, comb):
+            if(n==0):
+                res.append(comb.copy())
+                return
+            if(n<0):
+                return
+
+            for i in range(start, len(candidates)):
+                comb.append(candidates[i])
+                backtrack(i, n-candidates[i], comb) # this i allows to use the same number (the number present in starting index ) again and again on every call, so if we call for 2nd index the range will be from 2nd index to last avoiding the 0, 1 index and allowing the repeated use of the starting index so u can create 2222 then when u call for 2nd index in this u can also try 2223 i hope u get it or just dry run and think about it :)
+                comb.pop()
+        
+        backtrack(0, target, [])
+        return res
+
