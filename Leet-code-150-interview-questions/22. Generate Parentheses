@@ -1,0 +1,37 @@
+# Intuition
+* The idea is to add ')' only after valid '('
+* We use two integer variables openN & closedN to see how many '(' & ')' are in the current string
+* If openN < n then we can add '(' to the current string
+* If closedN < openN then we can add ')' to the current string
+
+![image.png](https://assets.leetcode.com/users/images/06064727-b2b7-4636-b37a-1dd07064c10e_1760239627.52793.png)
+
+![image.png](https://assets.leetcode.com/users/images/c7ad4e6b-9fd7-48d6-b860-6f3288afc7c9_1760239694.1555505.png)
+
+https://www.youtube.com/watch?v=s9fokUqJ76A&t=610s
+# Code
+```python3 []
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        
+        stack = []
+        res = []
+
+        def backtrack(openN, closedN):
+            if openN == closedN == n:
+                res.append("".join(stack))
+                return
+            
+            if openN<n:
+                stack.append("(")
+                backtrack(openN+1, closedN)
+                stack.pop()
+            
+            if closedN<openN:
+                stack.append(')')
+                backtrack(openN, closedN+1)
+                stack.pop()
+            
+        backtrack(0,0)
+        return res
+```
