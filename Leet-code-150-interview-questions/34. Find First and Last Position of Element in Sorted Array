@@ -1,0 +1,28 @@
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        s = 0
+        e = len(nums)-1
+        first, last = -1, -1
+
+        while(s<=e):
+            mid = (e+s)//2
+            if nums[mid] == target:
+                first = mid
+                e = mid-1
+            elif nums[mid]<target:
+                s = mid+1
+            else:
+                e = mid-1
+        
+        if first == -1:
+            return [-1,-1]
+            
+        for i in range(first, len(nums)):
+            if nums[i] == target:
+                last = i
+            else:
+                break
+        
+        return [first, last]
+# simpel binary seach to find the first occurence and then
+# as it is sorted iterat from first occurence till the last occurence and return the first , last
