@@ -1,0 +1,32 @@
+# Intuition
+* currmax stores the max of ( currmax + the present number , the number itself is greter then max till now)
+* similarly curr min stores the minimum at present 
+* whereas the global max stores the overall max till now that we get 
+* and global min contains the overall min value that we get
+* the total calculate the sum of all the values
+* now why we have this is bcus our answer is either the global max that we got or the the total - global minimum (this means sum of all except the global minimum which gives us a max sum that we could get from a circular list)
+* now in the last we put that condition bcus if [-5,-3,-5] a list with all negative value comes then our globalmax which is set to nums[0] and the total-globalmin would give us wrong answer
+* so at that time globalmax will be our right answer
+
+# Code
+```python3 []
+class Solution:
+    def maxSubarraySumCircular(self, nums: List[int]) -> int:
+        globalmax, globalmin = nums[0], nums[0]
+        currmax, currmin = 0, 0
+        total = 0
+
+        for n in nums:
+            currmax = max(currmax + n, n)
+            currmin = min(currmin + n, n)
+
+            globalmax = max(globalmax, currmax)
+            globalmin = min(globalmin, currmin)
+            
+            total += n
+        
+        return max(globalmax, total-globalmin) if globalmax>0 else globalmax
+
+```
+
+## https://www.youtube.com/watch?time_continue=993&v=fxT9KjakYPM&embeds_referring_euri=https%3A%2F%2Fwww.google.com%2F&source_ve_path=MjM4NTE
