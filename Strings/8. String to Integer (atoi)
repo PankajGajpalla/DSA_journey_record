@@ -1,0 +1,25 @@
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        s = s.lstrip()
+        result = 0
+        si = 1
+        if(len(s)>=1 and s[0]=='-'):
+            si = -1
+            s = s[1:]
+        elif(len(s)>=1 and s[0]=='+'):
+            s = s[1:]
+        
+        for c in s:
+            if 48<=ord(c) and ord(c)<=57:
+                result = result*10 + int(c)
+            else:
+                break
+
+        result = result*si
+        low = -2147483648
+        high = 2147483647
+        if result<low:
+            return low
+        if result>high:
+            return high
+        return result
