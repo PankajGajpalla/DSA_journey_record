@@ -1,0 +1,31 @@
+* a list represent a,b,c occurrence
+* the full meaning of this code is that first we travel the string till we have atleast one occurence of all a,b,c>1 
+* and then we move our left pointer and each time while moving it we check it also have a,b,c>1 if so then again we add to our answer
+* the above our main important point
+* while instead of going through each substring as the question says atleast one occurence so the string with a,b,c>1 + rest also gives us a substring len(s)-right 
+* :)
+
+# Code
+```python3 []
+class Solution:
+    def numberOfSubstrings(self, s: str) -> int:
+        li = [0,0,0]
+
+        left = 0
+        right = 0
+        ans = 0
+
+        while(right<len(s)):
+            li[ord(s[right]) - ord('a')] +=1
+
+            while(li[0]>0 and li[1]>0 and li[2]>0):
+                ans += len(s)-right
+                li[ord(s[left]) - ord('a')] -=1
+                left +=1
+            
+            right +=1
+        
+        return ans
+
+
+```
