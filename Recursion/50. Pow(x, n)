@@ -1,0 +1,21 @@
+# Intuition
+* when n is even then we square the number x and half the power n
+* lets say we have 2^6 so we can write this as 4^3 thats what we do and make the recursive depth even lesser
+* And for odd value of n we do it simply x* call it again then it will become even :)
+
+
+# Code
+```python3 []
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        if n==0:
+            return 1
+        if n<0:
+            return 1/self.myPow(x, -n)
+        
+        # even
+        if n%2==0:
+            return self.myPow(x*x, n//2) #this is genius
+        else:
+            return x * self.myPow(x, n-1)
+```
