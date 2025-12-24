@@ -1,0 +1,21 @@
+class Solution:
+    def generateBinaryStrings(self, n):
+        result = []
+
+        def solve(i, st):
+            if i == n:
+                result.append(st)
+                return
+
+            # Always allowed to add '0'
+            solve(i + 1, st + '0')
+
+            # Add '1' only if last character is '0'
+            if st[-1] == '0':
+                solve(i + 1, st + '1')
+
+        # Start with both valid first characters
+        solve(1, '0')
+        solve(1, '1')
+
+        return result
