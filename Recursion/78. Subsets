@@ -1,0 +1,21 @@
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        result = []
+        i = 0
+        curr = []
+        def solve(i, curr):
+            if i== len(nums):
+                result.append(curr.copy())
+                return
+            
+            # not including
+            solve(i+1, curr)
+            
+            # including
+            curr.append(nums[i])
+            solve(i+1, curr)
+
+            curr.pop()
+        
+        solve(i, curr)
+        return result
