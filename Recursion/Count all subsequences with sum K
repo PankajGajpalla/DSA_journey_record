@@ -1,0 +1,23 @@
+class Solution:
+    def countSubsequenceWithTargetSum(self, nums, k):
+        #your code goes here
+        count = 0
+        n = len(nums)
+        def solve(i, temp):
+            nonlocal count #used when reassignment not use when modifing 
+
+            if i==n:
+                if temp == k:
+                    count +=1
+                return
+            
+            # not include
+            solve(i+1, temp)
+
+            # include
+            # temp += nums[i]
+            solve(i+1, temp+ nums[i])
+            # temp -= nums[i]
+        
+        solve(0, 0)
+        return count
