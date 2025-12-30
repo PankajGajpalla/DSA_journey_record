@@ -1,0 +1,61 @@
+// Python lists are reference-based, so ans.append(temp) stores the same object and later changes affect all entries—hence temp.copy() is needed.
+// C++ vectors are value-based, so ans.push_back(temp) automatically makes a deep copy.
+class Solution {
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> result;
+        int n = candidates.size();
+        backtrack(0, result, target, {}, n, candidates);
+        return result;
+    }
+
+    void backtrack(int start, vector<vector<int>> &result, int target, vector<int> temp, int &n, vector<int> &candidates){
+        if(target==0){
+            result.push_back(temp);
+            return;
+        }
+
+        if(target<0){
+            return;
+        }
+
+        for(int i=start; i<n; i++){
+            temp.push_back(candidates[i]);
+            backtrack(i, result, target-candidates[i], temp, n, candidates);
+            temp.pop_back();
+        }
+    }
+};
+
+// the above is correct solution  [[2,2,3],[7]]
+
+//without "start" we generate the repeated output
+// [[2,2,3],[2,3,2],[3,2,2],[7]]
+
+
+// class Solution {
+// public:
+//     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+//         vector<vector<int>> result;
+//         int n = candidates.size();
+//         backtrack(result, target, {}, n, candidates);
+//         return result;
+//     }
+
+//     void backtrack(vector<vector<int>> &result, int target, vector<int> temp, int &n, vector<int> &candidates){
+//         if(target==0){
+//             result.push_back(temp);
+//             return;
+//         }
+
+//         if(target<0){
+//             return;
+//         }
+
+//         for(int i=0; i<n; i++){
+//             temp.push_back(candidates[i]);
+//             backtrack(result, target-candidates[i], temp, n, candidates);
+//             temp.pop_back();
+//         }
+//     }
+// };
