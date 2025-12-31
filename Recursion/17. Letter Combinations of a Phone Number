@@ -1,0 +1,48 @@
+
+class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        
+        alpha = ['','', 'abc', 'def', 'ghi', 'jkl', 'mno', 'pqrs', 'tuv', 'wxyz']
+
+        result = []
+        
+        def solve(st, index):
+            if(index == len(digits)):
+                result.append(st)
+                return
+            
+            # number = int(digits[index])
+            value = alpha[int(digits[index])]
+
+            for ch in value:
+                solve(st+ch, index+1)
+        
+        solve("", 0)
+        return result
+
+
+
+
+
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        vector<string> alpha = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        vector<string> result;
+        solve(result, digits, 0, alpha, "");
+        return result;
+    }
+
+    void solve(vector<string> &result, string &digits, int index, vector<string> &alpha, string st){
+        if(index == digits.size()){
+            result.push_back(st);
+            return;
+        }
+
+        string value = alpha[digits[index]-'0'];
+
+        for(auto &ch: value){
+            solve(result, digits, index+1, alpha, st+ch);
+        }
+    }
+};
