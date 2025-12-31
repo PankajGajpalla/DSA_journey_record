@@ -1,0 +1,30 @@
+class Solution:
+    def subsetSums(self, nums):
+        #your code goes here
+        result = []
+
+        def solve(i, temp):
+            if i==len(nums):
+                result.append(temp)
+                return
+            
+            # not include
+            solve(i+1, temp)
+
+            # include
+            temp += nums[i]
+            solve(i+1, temp)
+
+            #temp.pop(), nothing like that is needed as it here temp is an integer which is passed by value we dont need to backtrack it 
+            
+            #In Python:
+            # Integers are passed by value (immutable)
+            # Lists are passed by reference (mutable)
+
+            #Key observation 🧠
+            # temp is an integer, so no .copy() is needed
+            # Each recursive call gets its own value
+            # This is why the code works without backtracking temp
+
+        solve(0, 0)
+        return result
