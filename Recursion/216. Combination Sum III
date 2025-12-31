@@ -1,0 +1,31 @@
+# do combinatoin II and modify it cleaverly :)
+
+# Code
+```python3 []
+class Solution:
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        result = []
+        nums = [1,2,3,4,5,6,7,8,9]
+
+        def solve(start, temp, target):
+            if target<0:
+                return
+            if len(temp)>k:
+                return
+            
+            if target==0 and len(temp) == k:
+                result.append(temp.copy())
+                return
+
+            for i in range(start, len(nums)):
+                if(nums[i]>target): #dont put equal to here, as that will mean whatever number in nums that is capable of summing up to target we are not including it which is wrong..
+                    break
+                
+                temp.append(nums[i])
+                solve(i+1, temp, target-nums[i])
+                temp.pop()
+        
+        solve(0,[], n)
+        return result
+
+```
