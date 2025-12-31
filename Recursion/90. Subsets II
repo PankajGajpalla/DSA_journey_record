@@ -1,0 +1,43 @@
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        result = []
+        nums.sort()
+        def solve(start, curr):
+            result.append(curr.copy()) #thus
+            
+            for i in range(start, len(nums)):
+                if(i>start and nums[i] == nums[i-1]): #optimal , skips duplicate
+                    continue
+
+                curr.append(nums[i])
+                solve(i+1, curr)
+                curr.pop()
+        
+        solve(0, [])
+        return result
+            
+
+# ❌ What’s wrong in below thus.. version
+
+# You are adding subsets only at the base case:
+
+# if start == len(nums):
+#     result.append(curr.copy())
+#     return
+
+
+# This means:
+
+# Only subsets that reach the end of the array are added
+
+# You miss subsets like [], [1], [1,2], etc.
+
+# So you’re not truly generating all subsets.
+
+# ✅ Correct way (small but crucial fix)
+
+# In subset problems:
+
+# Every recursion state is a valid subset
+
+# So you must add curr at the start of the function, not only at the end.
