@@ -1,0 +1,35 @@
+class Solution:
+    def findPath(self, grid):
+        n = len(grid)
+        if grid[0][0] == 0:
+            return []
+        
+        result = []
+
+        def backtrack(r, c, temp):
+            if r==n-1 and c==n-1:
+                result.append(temp)
+                return
+            
+            for i,j,k in [[1,0,"D"], [0, -1,"L"], [0,1,"R"], [-1,0,"U"]]:
+                nr, nc = r+i, c+j
+                if 0<=nr<n and 0<=nc<n and grid[nr][nc] ==1:
+                    temp += k
+                    val = grid[nr][nc]
+                    grid[nr][nc] = -1
+
+                    backtrack(nr, nc, temp)
+
+                    temp = temp[:-1]
+                    grid[nr][nc] = val
+            
+        grid[0][0] = -1
+        backtrack(0,0,"")
+        grid[0][0] = 1
+        
+        result.sort()
+        return result
+
+
+
+        
