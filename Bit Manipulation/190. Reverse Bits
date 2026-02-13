@@ -1,0 +1,23 @@
+## time complexity  = O(1) bcus 32 is constant
+## space complexity = O(1) 
+
+# Code
+```cpp []
+class Solution {
+public:
+    int reverseBits(int n) {
+        uint32_t result = 0;
+
+        for(int i=0; i<32; i++){
+            result <<= 1;
+            cout<<"before result is "<<result;
+            result |= (n&1);
+            cout<<", after result is "<<result;
+            n >>= 1;
+            cout<<", n is "<<n<<endl;
+        }
+
+        return result;
+    }
+};
+```
