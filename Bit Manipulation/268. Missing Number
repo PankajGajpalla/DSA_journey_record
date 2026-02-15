@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int n = nums.size();
+        int k = 0;
+        for(int i=1; i<=n; i++){
+            k ^= nums[i-1]^i; // nums[n] will give error
+        }
+        return k;
+    }
+};
