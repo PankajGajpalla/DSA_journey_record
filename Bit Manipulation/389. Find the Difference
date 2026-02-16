@@ -1,0 +1,42 @@
+
+
+# Complexity
+- Time complexity:
+O(n) 
+
+- Space complexity:
+O(1)
+
+# Code
+```cpp []
+class Solution {
+public:
+    char findTheDifference(string s, string t) {
+        int ans = 0;
+        
+        for(auto c: s){
+            ans ^= c;
+        }
+        for(auto c: t){
+            ans ^= c;
+        }
+
+        return ans;
+    }
+};
+
+
+// class Solution {
+// public:
+//     char findTheDifference(string s, string t) {
+//         int ans = 0;
+//         for(auto c: s){
+//             ans += c;
+//         }
+//         for(auto c: t){
+//             ans -= c;
+//         }
+//         return char(-ans);
+//     }
+// };
+```
