@@ -1,0 +1,46 @@
+mask =
+1
+10
+100
+1000  (stop)
+
+- mask - 1: 111
+
+- Now: 111 ^ 101 = 010 = 2
+
+### Time: O(log n)
+
+### Space: O(1)
+# Code
+```cpp []
+
+
+class Solution {
+public:
+    int findComplement(int num) {
+        unsigned int mask = 1; //to create the required no. of 111111 bit :)
+        while(mask<=num){
+            mask<<=1;
+        }        
+        return (mask-1) ^num;
+    }
+};
+
+
+// class Solution {
+// public:
+//     int findComplement(int num) {
+//         int ans = 0;
+//         int p = 1;
+//         while(num){
+//             if(!(num&1)){
+//                 ans+= p;
+//             }
+//             p<<=1;
+//             num>>=1;
+//             cout<<num;
+//         }
+//         return ans;
+//     }
+// };
+```
