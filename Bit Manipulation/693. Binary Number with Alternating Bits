@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool hasAlternatingBits(int n) {
+        unsigned int x = n ^ (n>>1); // 101010 ^ 010101 = 111111
+        return (x & (x+1)) == 0; // 0111111 & 1000000 = 0000000
+    }
+};
+
+
+// class Solution {
+// public:
+//     bool hasAlternatingBits(int n) {
+//         int c = n&1;
+//         n>>=1;
+
+//         while(n){
+//             if((n&1) == c) return false;
+//             c = n&1;
+//             n>>=1;
+//         }
+//         return true;
+//     }
+// };
