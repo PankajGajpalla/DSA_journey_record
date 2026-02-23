@@ -1,0 +1,16 @@
+int binaryGap(int n) {
+    int pos = 0;
+    int last = -1;
+    int ans = 0;
+
+    while(n){
+        if(n & 1){
+            if(last != -1)
+                ans = max(ans, pos - last);
+            last = pos;
+        }
+        n >>= 1;
+        pos++;
+    }
+    return ans;
+}
